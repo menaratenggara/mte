@@ -1,0 +1,363 @@
+/* src/components/AdminData.css - Web-optimized responsive layout */
+
+.admin-data-root {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #90CAF9;
+  padding: 40px 60px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-height: auto;      /* ✅ don’t force fixed screen height */
+  height: 100vh;          /* ✅ grows with content */
+  overflow: visible;     /* ✅ allow children to expand beyond */
+}
+
+/* Content container */
+.admin-data-root > * {
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Headings */
+.admin-data-root h2 {
+  margin: 0 0 8px 0;
+  color: #0d47a1;
+  font-size: 28px;
+  text-align: center;
+}
+
+.admin-data-root .subtitle {
+  margin: 6px 0 20px 0;
+  color: #333;
+  text-align: center;
+  font-size: 18px;
+}
+
+.admin-data-root .accordion-card {
+  background: #fff;
+  border: 1px solid #e0e6ef;
+  border-radius: 10px;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 70%;
+  max-width: 100%;
+  height: 700px;
+  display: flex;
+  overflow: hidden; /* prevent double scrollbars */
+  position: relative;
+}
+
+/* toolbar/header inside card */
+.admin-data-root .accordion-toolbar {
+  flex-shrink: 0;
+  background: #f7fbff;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e0e6ef;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* scrollable content */
+.admin-data-root .accordion-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 12px;
+  scroll-behavior: smooth;
+}
+
+/* ✅ scrollable area inside accordion card */
+.admin-data-root .accordion-card > :not(.accordion-toolbar) {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 12px 12px 12px;
+  scroll-behavior: smooth;
+}
+
+.admin-data-root .icon-btn {
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid #d0d7e2;
+  border-radius: 6px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.08s ease;
+  line-height: 1;
+}
+
+.admin-data-root .icon-btn:hover { transform: translateY(-1px); }
+.admin-data-root .icon-btn.expand:hover { background: #e3f2fd; }
+.admin-data-root .icon-btn.collapse:hover { background: #ffebee; }
+
+/* Month accordion */
+.admin-data-root .month-accordion {
+  border-bottom: 1px solid #eef3fb;
+  padding: 12px 16px;
+}
+
+.admin-data-root .month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  cursor: pointer;
+  background: linear-gradient(180deg, #f9fbff, #ffffff);
+  transition: background 0.15s ease;
+}
+
+.admin-data-root .month-header:hover {
+  background: #f0f7ff;
+}
+
+.admin-data-root .month-label {
+  font-weight: 700;
+  color: #0d47a1;
+  font-size: 16px;
+}
+
+.admin-data-root .month-toggle {
+  font-size: 14px;
+  color: #1976d2;
+}
+
+/* children list */
+.admin-data-root .month-children {
+  padding: 8px 8px 0 16px;
+  background: #fff;
+}
+
+/* week/day tree */
+.admin-data-root .week-section {
+  margin-top: 8px;
+  padding-left: 12px;
+  border-left: 2px dashed #cfe8ff;
+}
+
+.admin-data-root .week-header {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 6px 0;
+  font-weight: 600;
+  color: #1565c0;
+}
+
+.admin-data-root .week-children {
+  margin-left: 12px;
+  padding-left: 8px;
+  border-left: 1px dashed #e6f0ff;
+}
+
+.admin-data-root .day-section {
+  margin-top: 6px;
+  padding-left: 8px;
+  border-left: 1px solid #eef7ff;
+}
+
+.admin-data-root .day-header {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 4px 0;
+  font-weight: 500;
+  color: #1976d2;
+}
+
+.admin-data-root .day-children {
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px dotted #eaf4ff;
+}
+
+.admin-data-root .month-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: #fbfdff;
+  margin-bottom: 6px;
+}
+
+.admin-data-root .month-item .fg {
+  font-weight: 600;
+  color: #2b3a67;
+}
+
+.admin-data-root .month-item .date {
+  color: #666;
+  font-size: 14px;
+}
+
+/* filter card */
+.admin-data-root .filter-card {
+  background: #fff;
+  border: 1px solid #e0e6ef;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.admin-data-root .slider-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #0d47a1;
+}
+
+.admin-data-root input[type="range"] {
+  width: 100%;
+}
+
+.admin-data-root .selected-months {
+  margin-top: 10px;
+  color: #333;
+  font-size: 15px;
+}
+
+/* actions row */
+.admin-data-root .actions-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.admin-data-root .delete-btn, .admin-data-root .back-btn {
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.admin-data-root .delete-btn {
+  background: #d32f2f;
+  color: #fff;
+}
+
+.admin-data-root .delete-btn:hover {
+  transform: translateY(-2px);
+  background: #b71c1c;
+}
+
+.admin-data-root .back-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 40px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: #b0bec5;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+  width: 150px;
+  text-align: center;
+  z-index: 999;
+}
+
+.admin-data-root .back-btn:hover {
+  transform: translateY(-2px);
+  background-color: #90a4ae;
+}
+
+/* working overlay */
+.admin-data-root .working-overlay {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: rgba(13, 71, 161, 0.95);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(9,30,66,0.12);
+  font-size: 15px;
+}
+
+/* empty / loader */
+.admin-data-root .empty {
+  padding: 24px;
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+}
+
+/* ✅ Proper centered spinning loader */
+.admin-data-root .loader {
+  position: fixed; /* fixed ensures it stays in viewport center */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.admin-data-root .loader::before {
+  content: "";
+  width: 60px;
+  height: 60px;
+  border: 6px solid #bbdefb;
+  border-top-color: #0d47a1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.admin-data-root .loader-text {
+  margin-top: 10px;
+  color: #0d47a1;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* 🔄 smooth rotation animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ✅ Responsive fix for smartphones */
+@media (max-width: 900px) {
+  .admin-data-root .back-btn {
+    left: 20px;           /* move closer to the screen edge */
+    bottom: 20px;         /* slightly higher for better visibility */
+    width: 150px;         /* smaller width to fit mobile view */
+    font-size: 14px;
+    padding: 14px 28px;
+  }
+
+  .admin-data-root {
+    padding: 30px 16px;
+    align-items: center;
+  }
+
+  .admin-data-root .accordion-card {
+    max-height: 400px;
+  }
+
+  .admin-data-root h2 {
+    font-size: 24px;
+  }
+
+  .admin-data-root .actions-row {
+    flex-direction: column;
+  }
+
+  .admin-data-root .delete-btn {
+    width: 100%;
+    margin: 0;
+  }
+}

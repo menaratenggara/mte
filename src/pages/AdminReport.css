@@ -1,0 +1,77 @@
+/* Root container */
+.admin-report-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #90caf9;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Main content area */
+.admin-report-root .content {
+  flex: 1; /* expand to fill remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  gap: 16px; /* spacing between buttons */
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Primary buttons (Staff / Production Line) */
+.admin-report-root .btn {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background-color: #1976d2;
+  color: white;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.admin-report-root .btn:hover {
+  background-color: #0d47a1;
+  transform: scale(1.02);
+}
+
+/* --- Back Button (AdminReport) --- */
+.admin-report-root .btn-back {
+  position: fixed;
+  bottom: 24px;           /* small gap from bottom */
+  left: 24px;             /* small gap from left */
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: #b0bec5;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); /* subtle lift */
+  z-index: 1000; /* ensure always visible */
+}
+
+.admin-report-root .btn-back:hover {
+  transform: translateY(-2px);
+  background-color: #90a4ae;
+}
+
+/* --- Responsive tweak for small screens --- */
+@media (max-width: 480px) {
+  .admin-report-root .btn-back {
+    bottom: 16px;
+    left: 16px;
+    width: 120px;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+

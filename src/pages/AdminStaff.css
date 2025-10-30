@@ -1,0 +1,343 @@
+/* src/components/AdminStaff.css (Scoped version – isolated from AdminProduct) */
+
+.admin-staff-page {
+  background: #90CAF9;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.admin-staff-page h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #0d47a1;
+}
+
+/* --- Top Controls (search + sort) --- */
+.admin-staff-page .top-controls {
+  display: flex;
+  align-items: center; /* ✅ vertically aligns input + buttons */
+  justify-content: space-between;
+  margin: 0 auto 24px auto;
+  flex-wrap: nowrap; /* ✅ keep them in one line */
+  gap: 12px;
+  max-width: 900px;
+}
+
+.admin-staff-page .top-controls input {
+  flex: 1;
+  min-width: 250px;
+  height: 38px; /* ✅ same height as buttons */
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  font-size: 16px;
+  margin: 0; /* ✅ remove top margin that pushed it down */
+  box-sizing: border-box;
+}
+
+.admin-staff-page .sort-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center; /* ✅ vertically align buttons with input */
+  flex-shrink: 0;
+  position: relative;
+  top: 0; /* ✅ no offset needed */
+}
+
+.admin-staff-page .sort-buttons button {
+  padding: 8px 16px;
+  height: 38px; /* ✅ exactly matches input height */
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-staff-page .sort-buttons button:hover {
+  background: #1565c0;
+  transform: translateY(-2px);
+}
+
+
+/* --- Staff List --- */
+.admin-staff-page .staff-list {
+  max-width: 900px;
+  margin: 0 auto 40px auto;
+  overflow-y: auto;
+  max-height: 850px;
+  padding-right: 6px;
+}
+
+.admin-staff-page .staff-item {
+  background: white;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: box-shadow 0.2s ease;
+}
+
+.admin-staff-page .staff-item:hover {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Staff Info Section --- */
+.admin-staff-page .staff-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.admin-staff-page .staff-main:hover {
+  background-color: #e3f2fd;
+}
+
+.admin-staff-page .staff-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-staff-page .staff-name {
+  font-weight: bold;
+  color: #0d47a1;
+}
+
+.admin-staff-page .staff-phone {
+  color: #555;
+  font-size: 14px;
+}
+
+.admin-staff-page .expand-icon {
+  font-size: 18px;
+  color: #1976d2;
+  margin-left: 12px;
+  transition: transform 0.2s ease;
+}
+
+/* --- Buttons --- */
+.admin-staff-page .staff-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.admin-staff-page .btn-edit {
+  background: #0288d1;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.admin-staff-page .btn-delete {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* --- Staff Form --- */
+.admin-staff-page .staff-form {
+  background: white;
+  padding: 24px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  max-width: 900px;
+  margin: 0 auto 60px auto;
+}
+
+.admin-staff-page .staff-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  font-size: 15px;
+}
+
+.admin-staff-page .staff-form button {
+  padding: 10px 18px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 15px;
+  transition: background 0.2s ease;
+}
+
+.admin-staff-page .staff-form button:hover {
+  background: #0d47a1;
+}
+
+.admin-staff-page .staff-form .btn-cancel {
+  background: #b0bec5;
+}
+
+/* --- Back Button --- */
+.admin-staff-page .back-btn {
+  position: fixed;
+  bottom: 30px;          /* distance from bottom edge */
+  left: 40px;            /* ✅ gap from the left side */
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: #b0bec5;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+  width: 150px;
+  text-align: center;
+}
+
+.admin-staff-page .back-btn:hover {
+  transform: translateY(-2px);
+  background-color: #90a4ae;
+}
+
+
+/* --- Tree Hierarchy (Months, Weeks, Days, FG) --- */
+.admin-staff-page .month-accordion {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin: 10px auto;
+  padding: 14px 18px;
+  max-width: 900px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+}
+
+.admin-staff-page .month-accordion:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.admin-staff-page .month-header {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.1em;
+  color: #0d47a1;
+  padding: 6px 4px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.admin-staff-page .month-header:hover {
+  background: #e3f2fd;
+}
+
+.admin-staff-page .month-children {
+  margin-left: 18px;
+  padding-left: 10px;
+  border-left: 3px solid #bbdefb;
+  margin-top: 8px;
+}
+
+.admin-staff-page .week-section {
+  margin-top: 6px;
+  padding-left: 12px;
+  border-left: 2px dashed #c5cae9;
+}
+
+.admin-staff-page .week-header {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: 500;
+  color: #1565c0;
+  padding: 4px 0;
+  transition: background 0.2s ease;
+}
+
+.admin-staff-page .week-header:hover {
+  background: #e8f1ff;
+}
+
+.admin-staff-page .week-children {
+  margin-left: 16px;
+  padding-left: 8px;
+  border-left: 1px dashed #c5cae9;
+  transition: all 0.2s ease;
+}
+
+.admin-staff-page .day-section {
+  margin-top: 4px;
+  padding-left: 10px;
+  border-left: 1px solid #e3f2fd;
+}
+
+.admin-staff-page .day-header {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  color: #1976d2;
+  padding: 2px 0;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.admin-staff-page .day-header:hover {
+  background: #f0f7ff;
+}
+
+.admin-staff-page .day-children {
+  margin-left: 14px;
+  padding-left: 10px;
+  border-left: 1px dotted #c5cae9;
+  transition: all 0.2s ease;
+}
+
+.admin-staff-page .month-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  font-size: 0.95em;
+  color: #333;
+  margin-left: 4px;
+}
+
+.admin-staff-page .month-item:hover {
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+.admin-staff-page .fg {
+  font-weight: 600;
+  color: #0d47a1;
+}
+
+.admin-staff-page .date {
+  color: #777;
+  font-size: 0.85em;
+}
+
+/* --- Optional subtle expand/collapse animation --- */
+.admin-staff-page .month-children,
+.admin-staff-page .week-children,
+.admin-staff-page .day-children {
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.25s ease;
+}

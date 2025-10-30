@@ -1,0 +1,222 @@
+/* src/components/AdminProgress.css — Scoped to AdminProgress page */
+
+.admin-progress-root {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  min-height: 100vh;
+  width: 100vw;           /* full viewport width */
+  background: #90caf9;
+  box-sizing: border-box;
+  overflow-x: hidden;     /* prevent horizontal scroll */
+}
+
+/* Back button row */
+.admin-progress-root .back-row {
+  position: fixed;
+  bottom: 26px;
+  left: 26px;
+}
+
+.admin-progress-root .back-btn {
+  width: 140px;          /* fixed width */
+  height: 48px;
+  border-radius: 8px;
+  border: none;
+  background: #b0bec5;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(9,30,66,0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.admin-progress-root .back-btn:hover {
+  background-color: #90a4ae;
+  transform: translateY(-2px);
+}
+
+/* Page-specific headings */
+.admin-progress-root h2 {
+  color: #0d47a1;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Search row */
+.admin-progress-root .search-row {
+  display: flex;
+  gap: 8px;
+  margin: 0 auto 10px auto;   
+  justify-content: center;
+  width: 90%;
+  max-width: 600px;      /* responsive max width */
+}
+
+.admin-progress-root .search-row input {
+  flex: 1;
+  padding: 15px 8px;
+  border-radius: 6px;
+  border: 1px solid #cfd8dc;
+}
+
+/* Actions row */
+.admin-progress-root .actions-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 50px;
+  flex-wrap: wrap;          /* allow wrapping on small screens */
+  justify-content: center;  /* ✅ center the buttons horizontally */
+}
+
+
+/* Buttons (scoped) */
+.admin-progress-root button {
+  padding: 14px 25px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #1976d2;
+  color: white;
+}
+
+/* Loader */
+.admin-progress-root .loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;              /* circle size */
+  height: 80px;
+  border-radius: 50%;       /* makes it a circle */
+  background: rgba(255, 255, 255, 0.85);
+  color: #0d47a1;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Accordion card */
+.admin-progress-root .accordion-card {
+  background: #fff;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  overflow: hidden;
+  padding: 2px 4px;
+  width: 90%;             /* relative width */
+  max-width: 700px;       /* max width for large screens */
+  height: 50px;
+  box-sizing: border-box;
+  margin: 4px auto;       /* center horizontally */
+}
+
+/* Month header */
+.admin-progress-root .month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;            /* responsive */
+  max-width: 800px;
+  margin: 0 auto;
+  height: 40px;
+  padding: 4px 8px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #f7fbff, #ffffff);
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+}
+
+/* Month children */
+.admin-progress-root .month-children {
+  padding: 2px 4px;
+  width: 90%;            /* responsive */
+  max-width: 600px;
+  margin: 0 auto;
+  background: #90caf9;
+  box-sizing: border-box;
+}
+
+/* Month item */
+.admin-progress-root .month-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;            /* responsive */
+  max-width: 500px;
+  margin: 4px auto;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: #fbfdff;
+  font-size: 18px;
+  line-height: 1.2;
+  box-sizing: border-box;
+  flex-wrap: wrap;       /* allow wrapping on small screens */
+}
+
+/* Month label and toggle inside header */
+.admin-progress-root .month-label,
+.admin-progress-root .month-toggle {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* FG Number, % and Time inside item — horizontal layout */
+.admin-progress-root .month-item .fg {
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;          /* allow shrinking */
+}
+
+.admin-progress-root .month-item .step-item {
+  padding-left: 8px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.admin-progress-root .search-row button:last-child {
+  background-color: #b0bec5;
+  color: #fff;
+}
+
+.admin-progress-root .search-row button:last-child:hover {
+  background-color: #90a4ae;
+}
+
+/* Responsive tweaks */
+@media (max-width: 720px) {
+  .admin-progress-root {
+    padding: 12px;
+  }
+
+  .admin-progress-root .accordion-card,
+  .admin-progress-root .month-children,
+  .admin-progress-root .month-item,
+  .admin-progress-root .search-row {
+    width: 95%;           /* almost full width on small screens */
+  }
+
+  .admin-progress-root .month-header {
+    font-size: 18px;
+  }
+
+  .admin-progress-root .month-item {
+    font-size: 16px;
+  }
+}

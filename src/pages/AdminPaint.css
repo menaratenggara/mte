@@ -1,0 +1,369 @@
+/* ================================
+   AdminPaint Component — Fully Scoped CSS
+   ================================ */
+
+.admin-paint-root {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #90caf9;
+  min-height: 100vh;
+  padding: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Card container */
+.admin-paint-root .card {
+  background: #90caf9;
+  border-radius: 12px;
+  padding: 30px 40px;
+  width: 95%;
+  max-width: 2300px;
+  margin: 40px auto;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-paint-root .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* Title & Remark */
+.admin-paint-root .title {
+  color: #0d47a1;
+  text-align: center;
+  font-weight: bold;
+}
+
+.admin-paint-root .remark {
+  text-align: center;
+  font-size: 15px;
+  margin: 10px 0 25px;
+}
+
+.admin-paint-root .remark.red {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* Images section */
+.admin-paint-root .images-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.admin-paint-root .image-box {
+  padding: 14px;
+  width: 280px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.admin-paint-root .image-box:hover {
+  transform: translateY(-4px);
+}
+
+.admin-paint-root .image-box img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.admin-paint-root .image-label {
+  margin-top: 10px;
+  font-weight: 600;
+  color: #1976d2;
+}
+
+/* Form styling */
+.admin-paint-root .form {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-paint-root .form-row {
+  display: grid;
+  grid-template-columns: 200px 1fr; /* label + input */
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.admin-paint-root .label {
+  font-weight: 600;
+  color: #0d47a1;
+}
+
+.admin-paint-root .form-row input,
+.admin-paint-root .form-row select,
+.admin-paint-root textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  background: #f8fbff;
+}
+
+.admin-paint-root textarea.current-note {
+  resize: vertical;
+  background: #f5f5f5;
+  border: 1px solid #bbb;
+}
+
+/* Notes & Buttons */
+.admin-paint-root .notes-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-paint-root .note-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-paint-root .note-btn {
+  border: 2px solid #1976d2;
+  background: #fff;
+  color: #1976d2;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-paint-root .note-btn.active {
+  background: #1976d2;
+  color: #fff;
+}
+
+.admin-paint-root .note-btn:hover {
+  background: #e3f2fd;
+}
+
+.admin-paint-root .other-input-row {
+  display: flex;
+  gap: 10px;
+  max-width: 400px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.admin-paint-root .other-input-row input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  max-width: 300px;
+}
+
+.admin-paint-root .add-note-btn {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.admin-paint-root .delete-note-btn {
+  background: #d32f2f !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-paint-root .delete-note-btn:hover {
+  background: #b71c1c !important;
+  transform: translateY(-1px);
+}
+
+.admin-paint-root .delete-note-btn:active {
+  transform: translateY(1px);
+  opacity: 0.9;
+}
+
+/* Actions — fixed button width, aligned to card edges */
+.admin-paint-root .actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  width: 100%;
+  gap: 0;
+}
+
+.admin-paint-root .btn-back,
+.admin-paint-root .btn-save {
+  width: 130px; 
+  padding: 10px 0;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.admin-paint-root .btn-back {
+  margin-right: 8px;
+  background: #757575;
+  color: #fff;
+}
+
+.admin-paint-root .btn-save {
+  margin-left: 8px;
+  background: #1976d2;
+  color: #fff;
+}
+
+.admin-paint-root .btn-back:hover {
+  background: #616161;
+  transform: translateY(-1px);
+}
+
+.admin-paint-root .btn-save:hover {
+  background: #0d47a1;
+  transform: translateY(-1px);
+}
+
+/* Date & Time row */
+.admin-paint-root .date-time-row {
+  display: grid;
+  grid-template-columns: 200px 1fr; 
+  gap: 17px;
+  width: 300px;
+  margin-top: 30px;
+}
+
+.admin-paint-root .date-time-row input {
+  width: 250px; 
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background: #f8fbff;
+}
+
+/* =====================================
+   🔍 Fullscreen Zoom Overlay — Centered
+   ===================================== */
+/* Zoom overlay */
+/* Fullscreen fixed overlay — unaffected by cursor position */
+.image-zoom-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: zoom-out;
+  overflow: hidden;
+  animation: fadeIn 0.25s ease;
+  /* 🧱 prevent parent influence */
+  transform: none !important;
+  perspective: none !important;
+  backface-visibility: visible !important;
+}
+
+/* Content stays locked center */
+.image-zoom-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  pointer-events: none; /* disables accidental hover shifting */
+}
+
+/* Zoomed image stays fixed, not cursor-sensitive */
+.zoomed-image {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 8px;
+  object-fit: contain;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+  animation: zoomIn 0.25s ease;
+  pointer-events: auto; /* still clickable for closing */
+  transform: none !important; /* lock position */
+}
+
+/* Animations */
+@keyframes zoomIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* Responsive for narrow screens */
+@media (max-width: 900px) {
+  .admin-paint-root .form {
+    padding: 20px;
+  }
+
+  .admin-paint-root .images-row {
+    gap: 15px;
+  }
+
+  .admin-paint-root .actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .admin-paint-root .btn-back,
+  .admin-paint-root .btn-save {
+    width: 100%;
+    margin: 0;
+  }
+
+  .admin-paint-root .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-paint-root .other-input-row input {
+    min-width: 100px;
+  }
+
+  .admin-paint-root .date-time-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-paint-root .date-time-row input {
+    width: 100%;
+  }
+}

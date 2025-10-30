@@ -1,0 +1,285 @@
+/* src/components/AdminProduct.css */
+
+/* Root & page layout */
+.admin-product-root {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #90caf9;
+  padding: 28px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Page title */
+.page-title {
+  margin: 0 0 14px 0;
+  color: #0d47a1;
+}
+
+/* --- Top Controls (Search + Sort Buttons) --- */
+.top-controls.product-top {
+  display: flex;
+  align-items: center;         /* ✅ vertically centers everything */
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto 20px auto;    /* center horizontally with bottom spacing */
+  flex-wrap: nowrap;
+}
+
+/* Search input */
+.search-input {
+  flex: 1;
+  min-width: 240px;
+  height: 40px;                /* ✅ same height as sort buttons */
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid #cfd8dc;
+  font-size: 15px;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* Sort buttons container */
+.sort-buttons {
+  display: flex;
+  align-items: center;         /* ✅ aligns buttons perfectly with input */
+  gap: 8px;
+  flex-shrink: 0;
+  position: relative;
+  top: 0;                      /* ✅ no nudge needed */
+}
+
+/* Individual sort buttons */
+.sort-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;                /* ✅ matches input height */
+  padding: 0 16px;
+  border-radius: 6px;
+  border: none;
+  background: #1976d2;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.sort-btn:hover {
+  background: #155a9a;
+  transform: translateY(-2px);
+}
+
+.sort-btn.active {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+
+
+/* Responsive fallback: allow wrapping on very narrow screens */
+@media (max-width: 520px) {
+  .top-controls.product-top { flex-wrap: wrap; gap: 8px; }
+  .search-input { flex-basis: 100%; min-width: 100%; }
+  .sort-buttons { width: 100%; justify-content: flex-start; }
+}
+
+
+/* header row */
+.list-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: #dfeffb;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cfd8dc;
+  font-weight: 700;
+
+  /* Align width and margin with product list wrapper */
+  width: 100%;
+  max-width: 880px;       /* same as product-list-wrapper */
+  margin: 0 auto 10px auto; /* center horizontally with bottom spacing */
+  box-sizing: border-box; /* ensure padding doesn't break alignment */
+  margin-bottom: 0 !important; 
+}
+
+.list-header .col { padding: 2px 8px; }
+.list-header .code { width: 140px; flex: 0 0 140px; }
+.list-header .qty { width: 60px; flex: 0 0 60px; text-align: center; }
+.list-header .desc { flex: 1 1 200px; min-width: 180px; max-width: 360px; }
+.list-header .cust { width: 140px; flex: 0 0 140px; }
+
+/* product list area */
+.product-list-wrapper {
+  max-height: 420px;
+  overflow-y: auto;
+  margin: 0 auto 18px auto;     /* center horizontally with bottom spacing */
+  max-width: 880px;              /* constrain width */
+}
+
+.product-list { display: flex; flex-direction: column; gap: 8px; }
+
+/* single product item */
+.product-item {
+  background: #fff;
+  border: 1px solid #e0e6ef;
+  border-radius: 8px;
+  padding: 8px;
+  transition: box-shadow 0.15s ease;
+}
+.product-item:hover { box-shadow: 0 6px 18px rgba(19, 38, 63, 0.06); }
+
+.product-main {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.product-main .col { padding: 6px 8px; }
+
+/* Align widths to header */
+.product-main .code { width: 140px; flex: 0 0 140px; }
+.product-main .qty { width: 60px; flex: 0 0 60px; text-align: center; }
+.product-main .desc { flex: 1 1 200px; min-width: 180px; max-width: 360px; color: #333; }
+.product-main .cust { width: 140px; flex: 0 0 140px; color: #333; }
+
+/* Responsive tweaks */
+@media (max-width: 880px) {
+  .product-main .code, .product-main .cust { display: none; }
+  .product-main .desc { flex: 1 1 160px; min-width: 160px; max-width: 280px; }
+  .product-main .qty { width: 60px; }
+}
+
+/* expand indicator */
+.expand-indicator {
+  width: 28px;
+  text-align: center;
+  color: #1976d2;
+  font-size: 14px;
+}
+
+/* actions shown when expanded */
+.product-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #eef3fb;
+}
+.edit-btn, .delete-btn {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+.edit-btn { background: #0288d1; color: white; }
+.delete-btn { background: #d32f2f; color: white; }
+
+/* empty state & loader */
+.empty {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+}
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+  height: 200px;           /* or any fixed height you want for loader area */
+}
+
+.loader {
+  font-size: 16px;
+  color: #555;
+}
+
+/* form card */
+.card.product-form {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e6ef;
+  max-width: 40%;              /* or any suitable width */
+  margin: 20px auto;           /* center horizontally */
+  display: flex;               /* use flex for vertical stacking */
+  flex-direction: column;
+  align-items: center;         /* center all children horizontally */
+}
+.product-form h3 { 
+  margin-top: 0; 
+  color: #0d47a1; 
+  text-align: center;          /* center text */
+}
+
+
+/* form rows */
+.form-row { 
+  display: flex; 
+  flex-direction: column; 
+  margin-bottom: 10px; 
+  width: 100%;                 /* stretch to card width */
+  align-items: center;          /* center content inside row */
+}
+
+.form-row label { 
+  margin-bottom: 6px; 
+  font-weight: 600; 
+  color: #2c3e50; 
+  text-align: center;           /* center label text */
+}
+
+.form-input {
+  padding: 8px 10px; 
+  border-radius: 6px; 
+  border: 1px solid #cfd8dc;
+  font-size: 14px;
+  width: 100%;                 /* input stretches within form-row */
+  max-width: 320px;            /* optional: limit input width */
+}
+
+/* actions */
+.form-actions { 
+  display: flex; 
+  gap: 8px; 
+  margin-top: 8px; 
+  justify-content: center;      /* center buttons horizontally */
+}
+.save-btn { background: #1976d2; color: #fff; padding: 10px 14px; border: none; border-radius: 6px; cursor: pointer; }
+.cancel-btn { background: #b0bec5; color: #fff; padding: 10px 14px; border: none; border-radius: 6px; cursor: pointer; }
+
+/* pinned back button at bottom-left */
+.back-btn {
+  position: fixed;
+  bottom: 26px;
+  left: 26px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #b0bec5;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(9,30,66,0.08);
+}
+.back-btn:hover { transform: translateY(-2px); background: #90a4ae; }
+
+/* responsive tweaks */
+@media (max-width: 880px) {
+  .list-header .code, .list-header .cust {
+    display: none;
+  }
+  .list-header .desc { flex: 1 1 160px; min-width: 160px; max-width: 280px; }
+  .list-header .qty { width: 60px; }
+}
+
+.product-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;       /* center everything horizontally */
+  max-width: 880px;
+  margin: 0 auto 18px auto;
+}

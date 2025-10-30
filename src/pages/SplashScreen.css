@@ -1,0 +1,27 @@
+/* src/pages/SplashScreen.css */
+
+.splash-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;          /* full screen height */
+  width: 100vw;           /* full screen width */
+  background-color: #90CAF9; /* theme background color */
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.logo {
+  width: 150px;  /* adjust size of your icon */
+  height: auto;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 28px;        /* slightly bigger for web layout */
+  color: #ffffff;         /* white text for contrast */
+  font-weight: bold;
+  margin: 0;
+}

@@ -1,0 +1,30 @@
+.step-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.step-item:hover {
+  background: rgba(25, 118, 210, 0.1);
+}
+
+.red-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: red;
+  margin-right: 6px;
+}
+
+.step-text {
+  flex: 1;
+  color: #1976d2;
+}
+
+.arrow {
+  font-size: 14px;
+  color: #1976d2;
+  margin-left: 8px;
+}

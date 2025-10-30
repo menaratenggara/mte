@@ -1,0 +1,153 @@
+/* AdminDashboard.css – Modern Web Design (Improved Vertical Spacing) */
+
+.admin-dashboard {
+background: linear-gradient(180deg, #90CAF9 0%);
+width: 100%;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+overflow-y: auto;
+font-family: "Inter", "Segoe UI", Arial, sans-serif;
+padding: 40px 20px;
+box-sizing: border-box;
+}
+
+/* Header */
+.admin-dashboard header {
+width: 100%;
+max-width: 1000px;
+text-align: left;
+margin-bottom: 20px;
+}
+
+.admin-dashboard h2 {
+color: #0d47a1;
+font-size: 1.8rem;
+font-weight: 700;
+margin-bottom: 8px;
+}
+
+/* Top info row */
+.top-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.welcome-text {
+font-size: 1.1rem;
+font-weight: 600;
+color: #1a237e;
+}
+
+.date-time-text {
+font-size: 0.95rem;
+color: #424242;
+margin-top: 6px;
+}
+
+/* Logout button */
+.logout-button {
+padding: 10px 20px;
+background-color: #1976d2;
+color: #fff;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+font-weight: 500;
+box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+transition: all 0.25s ease;
+}
+
+.logout-button:hover {
+background-color: #0d47a1;
+transform: translateY(-2px);
+}
+
+/* Icon grid */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px 60px; /* 40px row-gap (top-bottom), 60px column-gap (left-right) */
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 10px;
+  padding-block: 20px; /* ensures space between top and bottom rows */
+}
+
+/* Icon cards */
+.icon-group {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 24px 12px;
+  margin-bottom: 20px; /* <-- extra space below each card */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.icon-group:hover {
+transform: translateY(-5px);
+box-shadow: 0 8px 20px rgba(25, 118, 210, 0.25);
+}
+
+.icon-image {
+width: 80px;
+height: 80px;
+margin-bottom: 12px;
+transition: transform 0.3s ease;
+}
+
+.icon-group:hover .icon-image {
+transform: scale(1.1);
+}
+
+.icon-label {
+font-size: 0.95rem;
+color: #0d47a1;
+font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+.admin-dashboard h2 {
+font-size: 1.5rem;
+text-align: center;
+}
+
+.top-row {
+flex-direction: column;
+align-items: flex-start;
+gap: 10px;
+}
+
+.logout-button {
+align-self: flex-end;
+}
+
+.icon-group {
+padding: 20px;
+}
+
+.icon-image {
+width: 70px;
+height: 70px;
+}
+
+.icon-grid {
+row-gap: 40px; /* Slightly smaller on mobile */
+}
+}
+
+.profile-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.profile-section .icon-group {
+  width: 180px; /* default ~100px — this increases width */
+}

@@ -1,0 +1,110 @@
+/* Workstation Page */
+.workstation-page .workstation-container {
+  min-height: 100vh;
+  padding: 32px 40px;
+  background: linear-gradient(180deg, #90caf9 0%);
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.workstation-page .workstation-header {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #0d47a1;
+  text-align: center;
+}
+
+.workstation-page .ws-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+  max-width: 1440px;
+  justify-content: flex-start;
+}
+
+.workstation-page .ws-card {
+  background-color: #26a69a;
+  color: white;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 180px;
+  flex: 1 1 280px;
+  text-align: center;
+  white-space: pre-line;
+}
+
+.workstation-page .ws-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+.workstation-page .ws-title {
+  font-weight: 700;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.workstation-page .ws-names {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.workstation-page .span-2 {
+  flex: 2 1 560px;
+}
+
+.workstation-page .back-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 40px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: #b0bec5;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+  width: 150px;
+  text-align: center;
+}
+
+.workstation-page .back-btn:hover {
+  transform: translateY(-2px);
+  background-color: #90a4ae;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1200px) {
+  .workstation-page .ws-card {
+    flex: 1 1 45%;
+    min-height: 160px;
+    padding: 20px;
+  }
+  .workstation-page .workstation-header {
+    font-size: 28px;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 720px) {
+  .workstation-page .ws-card {
+    flex: 1 1 100%;
+    min-height: 140px;
+    padding: 16px;
+  }
+  .workstation-page .workstation-header {
+    font-size: 24px;
+  }
+}

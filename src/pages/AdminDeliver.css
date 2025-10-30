@@ -1,0 +1,180 @@
+.admin-deliver-root {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #90caf9;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.admin-deliver-root .card {
+  background: #90caf9;
+  border-radius: 12px;
+  padding: 30px 40px;
+  width: 95%;
+  max-width: 2100px;
+  margin: 40px auto;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-deliver-root .title {
+  color: #0d47a1;
+  text-align: center;
+  font-weight: bold;
+}
+
+.admin-deliver-root .remark {
+  text-align: center;
+  font-size: 15px;
+  margin: 10px 0 25px;
+}
+
+.admin-deliver-root .remark.has-remark {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.admin-deliver-root .images-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.admin-deliver-root .image-box {
+  padding: 14px;
+  width: 280px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.admin-deliver-root .image-box:hover { transform: translateY(-4px); }
+.admin-deliver-root .image-box img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; }
+.admin-deliver-root .image-label { margin-top: 10px; font-weight: 600; color: #1976d2; }
+
+.admin-deliver-root .form {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.admin-deliver-root .form-row,
+.admin-deliver-root .date-time-row {
+  display: grid;
+  grid-template-columns: 150px 1fr; /* label fixed, input fills remaining space */
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 40px;
+  max-width: 100%; /* prevent overflowing */
+  box-sizing: border-box;
+}
+
+.admin-deliver-root .date-time-row input {
+  width: 30%; /* ✅ input fills the column */
+  min-width: 0; /* allows shrinking on small screens */
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f8fbff;
+  font-size: 15px;
+  box-sizing: border-box; /* ensures padding included in width */
+}
+
+.admin-deliver-root .label { font-weight: 600; color: #0d47a1; }
+.admin-deliver-root input,
+.admin-deliver-root select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f8fbff;
+  font-size: 15px;
+}
+
+.admin-deliver-root .actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.admin-deliver-root .btn-back,
+.admin-deliver-root .btn-save {
+  width: 130px;
+  padding: 10px 0;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.admin-deliver-root .btn-back { background: #757575; color: #fff; }
+.admin-deliver-root .btn-save { background: #1976d2; color: #fff; }
+
+.admin-deliver-root .btn-back:hover { background: #616161; transform: translateY(-1px);}
+.admin-deliver-root .btn-save:hover { background: #0d47a1; transform: translateY(-1px); }
+
+.admin-deliver-root .image-zoom-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* ✅ guaranteed on top */
+  cursor: zoom-out;
+}
+
+.admin-deliver-root .image-zoom-wrapper {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-deliver-root .image-zoom-wrapper img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.25s ease;
+  transform: scale(1);
+}
+
+.admin-deliver-root .image-zoom-wrapper:hover img {
+  transform: scale(1.02);
+}
+
+.admin-deliver-root .image-zoom-content img { max-width: 90%; max-height: 90%; border-radius: 8px; }
+
+@media (max-width: 900px) {
+  .admin-deliver-root .form { padding: 20px; }
+  .admin-deliver-root .actions { flex-direction: column; gap: 12px; }
+  .admin-deliver-root .btn-back,
+  .admin-deliver-root .btn-save { width: 100%; }
+  .admin-deliver-root .form-row,
+  .admin-deliver-root .date-time-row {
+    grid-template-columns: 1fr; /* stack label and input vertically */
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .admin-deliver-root .form-row label,
+  .admin-deliver-root .date-time-row label {
+    font-size: 14px;
+  }
+    .admin-deliver-root .date-time-row input {
+    width: 100%; /* fills full width in stacked layout */
+    font-size: 14px;
+  }
+  .admin-deliver-root input { width: 100%; }
+}
