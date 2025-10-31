@@ -45,34 +45,58 @@ function AdminDashboard({ email, onProfileClick, onWorkstationClick, onStaffClic
       <div className="icon-grid">
         <div className="workstation-section">
           <div className="icon-group" onClick={onWorkstationClick}>
-            <img src="/assets/workstation_admin.png" alt="Workstation" className="icon-image" />
+          <img
+        src={process.env.PUBLIC_URL + "/assets/workstation_admin.png"}
+        alt="Workstation"
+        className="icon-image"
+      />
             <p className="icon-label">Workstation</p>
           </div>
 
           <div className="icon-group" onClick={onReportClick}>
-            <img src="/assets/report_admin.png" alt="Report" className="icon-image" />
+      <img
+        src={process.env.PUBLIC_URL + "/assets/report_admin.png"}
+        alt="Report"
+        className="icon-image"
+      />
             <p className="icon-label">Report</p>
           </div>
 
           <div className="icon-group" onClick={onProductClick}>
-            <img src="/assets/product_admin.png" alt="Product" className="icon-image" />
+      <img
+        src={process.env.PUBLIC_URL + "/assets/product_admin.png"}
+        alt="Product"
+        className="icon-image"
+      />
             <p className="icon-label">Product</p>
           </div>
         </div>
 
         <div className="icon-column">
           <div className="icon-group" onClick={onProgressClick}>
-            <img src="/assets/progress_admin.png" alt="Progress" className="icon-image" />
+      <img
+        src={process.env.PUBLIC_URL + "/assets/progress_admin.png"}
+        alt="Progress"
+        className="icon-image"
+      />
             <p className="icon-label">Progress</p>
           </div>
 
           <div className="icon-group" onClick={onDataClick}>
-            <img src="/assets/data_admin.png" alt="Data" className="icon-image" />
+      <img
+        src={process.env.PUBLIC_URL + "/assets/data_admin.png"}
+        alt="Data"
+        className="icon-image"
+      />
             <p className="icon-label">Data</p>
           </div>
 
           <div className="icon-group" onClick={onStaffClick}>
-            <img src="/assets/staff_admin.png" alt="Staff" className="icon-image" />
+      <img
+        src={process.env.PUBLIC_URL + "/assets/staff_admin.png"}
+        alt="Staff"
+        className="icon-image"
+      />
             <p className="icon-label">Staff</p>
           </div>
         </div>
@@ -80,7 +104,11 @@ function AdminDashboard({ email, onProfileClick, onWorkstationClick, onStaffClic
 
       <div className="profile-section">
         <div className="icon-group" onClick={onProfileClick}>
-          <img src="/assets/profile_admin.png" alt="Profile" className="icon-image" />
+      <img
+        src={process.env.PUBLIC_URL + "/assets/profile_admin.png"}
+        alt="Profile"
+        className="icon-image"
+      />
           <p className="icon-label">Profile</p>
         </div>
       </div>

@@ -49,12 +49,20 @@ function MainScreen({ onAdminAuthorized }) {
 
   return (
     <div className="main-container">
-      <img src="/assets/menara_tenggara.png" alt="Logo" className="logo" />
+        <img
+        src={process.env.PUBLIC_URL + "/assets/menara_tenggara.png"}
+        alt="Logo"
+        className="logo"
+      />
       <h2>Menara Tenggara Enterprise</h2>
 
       <h3>Admin Login</h3>
       <button className="btn google" onClick={handleAdminLogin}>
-        <img src="/assets/google.png" alt="Google" className="google-icon" />
+      <img
+        src={process.env.PUBLIC_URL + "/assets/google.png"}
+        alt="Google"
+        className="google-icon"
+      />
         Sign In via Google
       </button>
 
