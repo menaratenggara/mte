@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/menara-tenggara-admin/static/css/main.1532cf25.css",
-    "main.js": "/menara-tenggara-admin/static/js/main.040b52ed.js",
-    "static/js/453.549f2422.chunk.js": "/menara-tenggara-admin/static/js/453.549f2422.chunk.js",
-    "index.html": "/menara-tenggara-admin/index.html",
-    "main.1532cf25.css.map": "/menara-tenggara-admin/static/css/main.1532cf25.css.map",
-    "main.040b52ed.js.map": "/menara-tenggara-admin/static/js/main.040b52ed.js.map",
-    "453.549f2422.chunk.js.map": "/menara-tenggara-admin/static/js/453.549f2422.chunk.js.map"
+    "main.css": "/mte/static/css/main.1532cf25.css",
+    "main.js": "/mte/static/js/main.a319e2dd.js",
+    "static/js/453.549f2422.chunk.js": "/mte/static/js/453.549f2422.chunk.js",
+    "index.html": "/mte/index.html",
+    "main.1532cf25.css.map": "/mte/static/css/main.1532cf25.css.map",
+    "main.a319e2dd.js.map": "/mte/static/js/main.a319e2dd.js.map",
+    "453.549f2422.chunk.js.map": "/mte/static/js/453.549f2422.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1532cf25.css",
-    "static/js/main.040b52ed.js"
+    "static/js/main.a319e2dd.js"
   ]
 }
