@@ -131,40 +131,37 @@ const searchFgNumber = async () => {
     const fgList = [];
 
     // 1️⃣ Loop through all nodes to find matching FG numbers
-    for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i];
-      const snap = await get(ref(rtdb, node));
-      snap.forEach((child) => {
-        const data = child.val();
-        if (data.fgNumber === fgNumber) {
-          // Create new FG item if not exists
-          if (!fgMap[data.fgNumber]) {
-            const fgItem = {
-              fgNumber: data.fgNumber,
-              date: data.receivingDate || null,
-              time: data.receivingTime || null,
-              steps: [],
-              stepsList: [],
-              percentage: 0,
-              nodeRemarks: {},
-              isExpanded: false,
-            };
-            fgMap[data.fgNumber] = fgItem;
-            fgList.push(fgItem);
-          }
+for (let i = 0; i < nodes.length; i++) {
+  const node = nodes[i];
+  const snap = await get(ref(rtdb, node));
+  snap.forEach((child) => {
+    const data = child.val();
+    if (data.fgNumber === fgNumber) {
+      if (!fgMap[data.fgNumber]) {
+        const fgItem = {
+          fgNumber: data.fgNumber,
+          date: data[nodeDateField[node]] || null,
+          time: data[nodeTimeField[node]] || null,
+          steps: [],
+          stepsList: [],
+          percentage: 0,
+          nodeRemarks: {},
+          isExpanded: false,
+        };
+        fgMap[data.fgNumber] = fgItem;
+        fgList.push(fgItem);
+      }
 
-          // Add step info
-          const fgItem = fgMap[data.fgNumber];
-          const stepPercentage = ((i + 1) * 100) / nodes.length;
-          const stepStr = `${node} - ${stepPercentage}%`;
-          if (!fgItem.steps.includes(stepStr)) fgItem.steps.push(stepStr);
+      const fgItem = fgMap[data.fgNumber];
+      const stepPercentage = ((i + 1) * 100) / nodes.length;
+      const stepStr = `${node} - ${stepPercentage}%`;
+      if (!fgItem.steps.includes(stepStr)) fgItem.steps.push(stepStr);
+      fgItem.percentage = Math.round((fgItem.steps.length * 100) / nodes.length);
 
-          fgItem.percentage = Math.round((fgItem.steps.length * 100) / nodes.length);
-
-          if (data.remark) fgItem.nodeRemarks[node] = data.remark;
-        }
-      });
+      if (data.note) fgItem.nodeRemarks[node] = data.note;
     }
+  });
+}
 
     if (fgList.length === 0) {
       alert("FG Number not found");
@@ -193,6 +190,24 @@ const searchFgNumber = async () => {
     setLoading(false);
   }
 };
+
+  // ------------------ Dynamic mapping of date/time per node ------------------
+const nodeDateField = {
+  Receive: "receivingDate",
+  Treat: "dateTreat",
+  Paint: "datePaint",
+  Pack: "datePack",
+  Deliver: "dateDeliver"
+};
+
+const nodeTimeField = {
+  Receive: "receivingTime",
+  Treat: "timeTreat",
+  Paint: "timePaint",
+  Pack: "timePack",
+  Deliver: "timeDeliver"
+};
+
   // ------------------ Sort Toggle ------------------
   const toggleSort = () => {
     setSortLatest(!sortLatest);
