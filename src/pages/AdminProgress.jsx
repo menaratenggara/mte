@@ -228,7 +228,7 @@ const searchFgNumber = async () => {
         </button>
       </div>
 
-      <h2>Progress</h2>
+      <h2>Progress Test</h2>
 
       {/* Search */}
       <div className="search-row">
