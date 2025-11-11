@@ -118,80 +118,7 @@ function AdminProgress({ onBack, email, onNavigate }) { // ✅ now accepts onNav
     groupByDate(items);
   };
 
-  // ------------------ Search ------------------
-const searchFgNumber = async () => {
-  const fgNumber = searchQuery.trim();
-  if (!fgNumber) return alert("Please enter FG Number");
-
-  setLoading(true);
-
-  try {
-    const nodes = ["Receive", "Treat", "Paint", "Pack", "Deliver"];
-    const fgMap = {};
-    const fgList = [];
-
-    // 1️⃣ Loop through all nodes to find matching FG numbers
-for (let i = 0; i < nodes.length; i++) {
-  const node = nodes[i];
-  const snap = await get(ref(rtdb, node));
-  snap.forEach((child) => {
-    const data = child.val();
-    if (data.fgNumber === fgNumber) {
-      if (!fgMap[data.fgNumber]) {
-        const fgItem = {
-          fgNumber: data.fgNumber,
-          date: data[nodeDateField[node]] || null,
-          time: data[nodeTimeField[node]] || null,
-          steps: [],
-          stepsList: [],
-          percentage: 0,
-          nodeRemarks: {},
-          isExpanded: false,
-        };
-        fgMap[data.fgNumber] = fgItem;
-        fgList.push(fgItem);
-      }
-
-      const fgItem = fgMap[data.fgNumber];
-      const stepPercentage = ((i + 1) * 100) / nodes.length;
-      const stepStr = `${node} - ${stepPercentage}%`;
-      if (!fgItem.steps.includes(stepStr)) fgItem.steps.push(stepStr);
-      fgItem.percentage = Math.round((fgItem.steps.length * 100) / nodes.length);
-
-      if (data.note) fgItem.nodeRemarks[node] = data.note;
-    }
-  });
-}
-
-    if (fgList.length === 0) {
-      alert("FG Number not found");
-      setFgItems([]);
-      setDateGroups([]);
-      return;
-    }
-
-    // 2️⃣ Build stepsList
-    fgList.forEach((item) => {
-      const stepsList = [];
-      item.steps.forEach((step, index) => {
-        if (index > 0) stepsList.push({ type: "gap" });
-        stepsList.push({ type: "step", step });
-      });
-      item.stepsList = stepsList;
-    });
-
-    // 3️⃣ Update state
-    setFgItems(fgList);
-    groupByDate(fgList);
-  } catch (err) {
-    console.error("Search error:", err);
-    alert("Error searching FG number");
-  } finally {
-    setLoading(false);
-  }
-};
-
-  // ------------------ Dynamic mapping of date/time per node ------------------
+    // ------------------ Dynamic mapping of date/time per node ------------------
 const nodeDateField = {
   Receive: "receivingDate",
   Treat: "dateTreat",
@@ -206,6 +133,79 @@ const nodeTimeField = {
   Paint: "timePaint",
   Pack: "timePack",
   Deliver: "timeDeliver"
+};
+
+// ------------------ Search ------------------
+const searchFgNumber = async () => {
+  const fgNumber = searchQuery.trim();
+  if (!fgNumber) return alert("Please enter FG Number");
+
+  setLoading(true);
+
+  try {
+    const nodes = ["Receive", "Treat", "Paint", "Pack", "Deliver"];
+    const fgMap = {};
+    const fgList = [];
+
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      const snap = await get(ref(rtdb, node));
+      snap.forEach((child) => {
+        const data = child.val();
+        if (data.fgNumber && data.fgNumber.trim() === fgNumber) {
+          if (!fgMap[data.fgNumber]) {
+            const fgItem = {
+              fgNumber: data.fgNumber,
+              date: data[nodeDateField[node]] || null,
+              time: data[nodeTimeField[node]] || null,
+              steps: [],
+              stepsList: [],
+              percentage: 0,
+              nodeRemarks: {},
+              isExpanded: false,
+            };
+            fgMap[data.fgNumber] = fgItem;
+            fgList.push(fgItem);
+          }
+
+          const fgItem = fgMap[data.fgNumber];
+          const stepPercentage = ((i + 1) * 100) / nodes.length;
+          const stepStr = `${node} - ${stepPercentage}%`;
+          if (!fgItem.steps.includes(stepStr)) fgItem.steps.push(stepStr);
+          fgItem.percentage = Math.round(
+            (fgItem.steps.length * 100) / nodes.length
+          );
+
+          if (data.note) fgItem.nodeRemarks[node] = data.note;
+        }
+      });
+    }
+
+    if (fgList.length === 0) {
+      alert("FG Number not found");
+      setFgItems([]);
+      setDateGroups([]);
+      return;
+    }
+
+    // Build stepsList
+    fgList.forEach((item) => {
+      const stepsList = [];
+      item.steps.forEach((step, index) => {
+        if (index > 0) stepsList.push({ type: "gap" });
+        stepsList.push({ type: "step", step });
+      });
+      item.stepsList = stepsList;
+    });
+
+    setFgItems(fgList);
+    groupByDate(fgList);
+  } catch (err) {
+    console.error("Search error:", err);
+    alert("Error searching FG number");
+  } finally {
+    setLoading(false);
+  }
 };
 
   // ------------------ Sort Toggle ------------------
