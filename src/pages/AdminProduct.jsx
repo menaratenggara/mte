@@ -15,6 +15,7 @@ export default function AdminProduct({ onBack, email }) {
   const [description, setDescription] = useState("");
   const [customer, setCustomer] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [supplier, setSupplier] = useState("");
 
   // UI controls
   const [search, setSearch] = useState("");
@@ -58,6 +59,7 @@ export default function AdminProduct({ onBack, email }) {
       description: description.trim(),
       customer: customer.trim(),
       quantity: qty,
+      supplier: supplier.trim(),
     };
 
     set(ref(rtdb, `Products/${productId}`), product)
@@ -74,6 +76,7 @@ export default function AdminProduct({ onBack, email }) {
     setDescription(product.description || "");
     setCustomer(product.customer || "");
     setQuantity(product.quantity != null ? String(product.quantity) : "");
+    setSupplier(product.supplier || "");
   };
 
   const handleDelete = (product) => {
@@ -89,6 +92,7 @@ export default function AdminProduct({ onBack, email }) {
     setDescription("");
     setCustomer("");
     setQuantity("");
+    setSupplier("");
   };
 
   // Search + sort derived list
@@ -156,7 +160,8 @@ export default function AdminProduct({ onBack, email }) {
         <div className="col code">Code</div>
         <div className="col qty">Qty</div>
         <div className="col desc">Description</div>
-        <div className="col cust">Part</div>
+        <div className="col cust">Car</div>
+        <div className="col supplier">Supplier</div>
       </div>
 
       {/* Product List + Progress */}
@@ -236,6 +241,17 @@ export default function AdminProduct({ onBack, email }) {
             className="form-input"
           />
         </div>
+
+        <div className="form-row">
+        <label>Supplier</label>
+        <input
+          type="text"
+          value={supplier}
+          onChange={(e) => setSupplier(e.target.value)}
+          placeholder="Supplier name"
+          className="form-input"
+        />
+      </div>
 
         <div className="form-actions">
           <button className="save-btn" onClick={handleSave}>

@@ -12,6 +12,7 @@ function AdminWorkstation({ onBack }) {
     Deliver: [],
   });
   const [loading, setLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0); // 🔹 trigger refresh
 
   useEffect(() => {
     const wsRef = ref(rtdb, "Workstation");
@@ -23,7 +24,9 @@ function AdminWorkstation({ onBack }) {
 
       // Get current date in dd/mm/yyyy format
       const today = new Date();
-      const currentDate = `${today.getDate().toString().padStart(2, "0")}/${(today.getMonth()+1).toString().padStart(2, "0")}/${today.getFullYear()}`;
+      const currentDate = `${today.getDate().toString().padStart(2, "0")}/${(today.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}/${today.getFullYear()}`;
 
       Object.values(data).forEach((item) => {
         if (item.name && item.place && item.timestamp) {
@@ -39,7 +42,13 @@ function AdminWorkstation({ onBack }) {
     });
 
     return () => off(wsRef, "value", listener);
-  }, []);
+  }, [refreshKey]); // 🔹 re-run useEffect when refreshKey changes
+
+  // 🔹 Refresh button handler
+  const handleRefresh = () => {
+    setLoading(true);
+    setTimeout(() => setRefreshKey((prev) => prev + 1), 300); // re-trigger listener
+  };
 
   const handleWSClick = (place) => {
     const names = workstations[place];
@@ -70,6 +79,12 @@ function AdminWorkstation({ onBack }) {
     <div className="workstation-page">
       <div className="workstation-container">
         <h2 className="workstation-header">Workstation Layout</h2>
+
+        {/* 🔹 Refresh Button */}
+        <button className="refresh-btn" onClick={handleRefresh} disabled={loading}>
+          {loading ? "Refreshing..." : "↻ Refresh"}
+        </button>
+
         <div className="ws-grid">
           {renderWS("Receive", "Workstation = Receive", "receive")}
           {renderWS("Treat", "Workstation = Treat", "treat")}

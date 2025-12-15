@@ -1,124 +1,121 @@
-.main-container {
+/* ===== PAGE ROOT ===== */
+.page-root {
+  min-height: 100vh;
+  background: #90CAF9;
   display: flex;
   flex-direction: column;
-  align-items: center;       /* horizontal centering */
-  justify-content: center;   /* vertical centering */
-  padding: 40px 20px;        /* padding around content */
-  text-align: center;
-  min-height: 100vh;         /* full viewport height */
-  width: 100vw;              /* full viewport width */
-  background-color: #90CAF9; /* light background */
-  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.logo {
-  width: 150px;
-  height: auto;
-  margin-bottom: 20px;
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: #e3f2fd;
 }
 
-h2 {
-  margin: 10px 0 20px 0;
-  color: #0d47a1;
-  font-size: 32px;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-h3 {
-  margin: 20px 0 10px 0;
-  color: #0d47a1;
+.header-logo {
+  width: 60px;
+}
+
+.header h1 {
   font-size: 24px;
+  color: #0d47a1;
 }
 
-.dropdown {
-  width: 250px;
-  padding: 10px;
-  margin-bottom: 16px;
-  font-size: 16px;
-}
-
-.btn {
-  width: 250px;
-  padding: 12px;
-  margin: 10px 0;
-  background: #90caf9;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.btn:hover {
-  background: #64b5f6;
-}
-
+/* ===== GOOGLE BUTTON ===== */
 .google {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 250px;
-  padding: 12px;
+  padding: 10px 16px;
   background: white;
   border: 1px solid #333;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  color: #333; /* <-- ensure text is visible */
-  font-size: 16px;
 }
 
 .google:hover {
-  background: #f1f1f1; /* slight hover effect */
+  background: #f1f1f1;
 }
 
 .google-icon {
-  width: 24px;
+  width: 20px;
   margin-right: 8px;
 }
 
-.forklift-container {
-  position: relative;
-  margin: 30px 0;
-  height: 120px;
-  width: 100vw;            /* full width for forklift movement */
-  overflow: hidden;
+/* ===== CONTENT ===== */
+.content {
+  flex: 1;
+  padding: 40px 60px;
+  text-align: center;
 }
 
-.forklift {
-  width: 100px;
-  position: absolute;
-  animation: moveForklift 6s linear infinite;
+.content h2 {
+  font-size: 28px;
+  color: #0d47a1;
+  margin-bottom: 20px;
 }
 
-.forklift-shadow {
-  width: 100px;
-  position: absolute;
-  top: 70px;
-  opacity: 0.3;
-  filter: blur(2px);
-  animation: moveForklift 6s linear infinite;
+.summary {
+  max-width: 900px;
+  margin: 0 auto 40px auto;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #1a237e;
 }
 
-/* Full screen movement: start offscreen right, move fully left, then loop */
-@keyframes moveForklift {
-  0% {
-    left: 100vw;
-  }
-  50% {
-    left: calc(0% - 100px);
-  }
-  100% {
-    left: 100vw;
-  }
+/* ===== IMAGE ROW ===== */
+.image-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
-/* Overlay loader */
+.image-row img {
+  width: 720px;
+  height: 480px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background: #e3f2fd;
+  padding: 24px;
+  text-align: center;
+}
+
+.phone {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.address-title {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.address-link {
+  color: #0d47a1;
+  text-decoration: underline;
+}
+
+/* ===== LOADER ===== */
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(0,0,0,0.3);
   display: flex;
   justify-content: center;
@@ -137,4 +134,10 @@ h3 {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+.contact-info,
+.address-info {
+  font-size: 16px;
+  margin: 6px 0;
 }

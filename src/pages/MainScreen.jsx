@@ -9,18 +9,15 @@ function MainScreen({ onAdminAuthorized }) {
     try {
       setLoading(true);
 
-      // 🔹 Sign in with Google
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const email = user?.email;
 
       if (!email) {
         alert("Login failed. No email found.");
-        setLoading(false);
         return;
       }
 
-      // 🔹 Fetch Admins/profile document
       const docRef = doc(firestoreDB, "Admins", "profile");
       const docSnap = await getDoc(docRef);
 
@@ -29,8 +26,7 @@ function MainScreen({ onAdminAuthorized }) {
         const staffEmails = Array.isArray(data.staffEmails) ? data.staffEmails : [];
 
         if (staffEmails.includes(email)) {
-          alert(`Signed in as ${email}`);
-          onAdminAuthorized(email); // ✅ Notify App.js to show AdminDashboard
+          onAdminAuthorized(email);
         } else {
           alert("Access denied. You are not an authorized admin.");
           await auth.signOut();
@@ -39,32 +35,76 @@ function MainScreen({ onAdminAuthorized }) {
         alert("Admin profile document not found.");
       }
     } catch (error) {
-      console.error("Login error code:", error.code);
-      console.error("Login error message:", error.message);
-      alert("Google Sign-In failed. Check console for details.");
+      console.error(error);
+      alert("Google Sign-In failed.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="main-container">
-        <img
-        src={process.env.PUBLIC_URL + "/assets/menara_tenggara.png"}
-        alt="Logo"
-        className="logo"
-      />
-      <h2>Menara Tenggara Enterprise</h2>
+    <div className="page-root">
 
-      <h3>Admin Login</h3>
-      <button className="btn google" onClick={handleAdminLogin}>
-      <img
-        src={process.env.PUBLIC_URL + "/assets/google.png"}
-        alt="Google"
-        className="google-icon"
-      />
-        Sign In via Google
-      </button>
+      {/* ===== HEADER ===== */}
+      <header className="header">
+        <div className="header-left">
+          <img
+            src={process.env.PUBLIC_URL + "/assets/menara_tenggara.png"}
+            alt="Logo"
+            className="header-logo"
+          />
+          <h1>Menara Tenggara Enterprise</h1>
+        </div>
+
+        <button className="btn google header-login" onClick={handleAdminLogin}>
+          <img
+            src={process.env.PUBLIC_URL + "/assets/google.png"}
+            alt="Google"
+            className="google-icon"
+          />
+          Admin Login
+        </button>
+      </header>
+
+      {/* ===== CONTENT ===== */}
+      <main className="content">
+        <h2>About Menara Tenggara Enterprise</h2>
+
+        <p className="summary">
+          Menara Tenggara Enterprise is a bumiputra status company and has been
+          operating since 1997. We are a sb-vendor for Sapura Machining
+          Corporation Sdn Bhd and LSF Technology Sdn Bhd which provide automotive
+          component painting services for PERODUA, HONDA, MAZDA, and TOYOTA's
+          cars. We have been recognized by SIRIM with ISO 9001:2015 certified
+          since 2013.
+        </p>
+
+        {/* ===== IMAGES ===== */}
+        <div className="image-row">
+          <img src={process.env.PUBLIC_URL + "/assets/img1.jpg"} alt="Factory 1" />
+          <img src={process.env.PUBLIC_URL + "/assets/img2.jpg"} alt="Factory 2" />
+          <img src={process.env.PUBLIC_URL + "/assets/img3.jpg"} alt="Factory 3" />
+        </div>
+      </main>
+
+      {/* ===== FOOTER ===== */}
+      <footer className="footer">
+        <p className="contact-info">
+          <strong>Contact information :</strong> 06-794 1223
+        </p>
+
+        <p className="address-info">
+          <strong>Address:</strong>{" "}
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=Jalan+Nilai+7/10+487,+Nilai,+Negeri+Sembilan,+Malaysia"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="address-link"
+          >
+            Jalan Nilai 7/10 487, Nilai, Negeri Sembilan, Malaysia
+          </a>
+        </p>
+      </footer>
 
       {loading && (
         <div className="overlay">

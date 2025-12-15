@@ -13,6 +13,7 @@ export default function ProductItem({ product, onEdit, onDelete }) {
         <div className="col qty">{product.quantity}</div>
         <div className="col desc">{product.description}</div>
         <div className="col cust">{product.customer}</div>
+        <div className="col supplier">{product.supplier}</div>
 
         <div className="expand-indicator">{expanded ? "▲" : "▼"}</div>
       </div>

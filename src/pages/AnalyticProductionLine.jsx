@@ -150,101 +150,164 @@ const formatDateForFilter = (date) => {
   return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()}`;
 };
 
-const exportCsv = () => {
-  if (!fgDetailsMap || Object.keys(fgDetailsMap).length === 0) {
-    alert("No data to export");
-    return;
-  }
+    const exportCsv = () => {
+      if (!fgDetailsMap || Object.keys(fgDetailsMap).length === 0) {
+        alert("No data to export");
+        return;
+      }
 
-  const rows = [
-    [
-      "FG Number",
-      "Stage",
-      "Include With FG",
-      "Manufacturing Date",
-      "Date",
-      "Time",
-      "User Name",
-      "Quantity",
-      "DO Number",
-      "Note",
-      "Label Type",
-      "Image URL",
-      "QR URL",
-      "Verified Timestamp",
-      "Release Note No",
-      "NG Material",
-      "NG Manufacturing",
-      "Dented",
-      "Rusted",
-      "Other",
-    ],
-  ];
+      const sdf = new Intl.DateTimeFormat("en-GB"); // dd/MM/yyyy
+      const stageOrder = ["Receive", "Treat", "Paint", "Pack", "Deliver"];
+      const rows = [
+        [
+          "FG Number",
+          "Stage",
+          "Include FG",
+          "Manufacturing Date",
+          "Date",
+          "Time",
+          "User Name",
+          "Quantity",
+          "DO Number",
+          "Note",
+          "Label Type",
+          "Image URL",
+          "QR URL",
+          "Verified Timestamp",
+          "Release Note",
+          "NG Material",
+          "NG Manufacturing",
+          "Dented",
+          "Rusted",
+          "Other",
+        ],
+      ];
 
-  Object.entries(fgDetailsMap).forEach(([fgNumber, stageMap]) => {
-    Object.entries(stageMap).forEach(([stage, fgData]) => {
-      const rawDate =
-        fgData.dateDeliver ||
-        fgData.datePack ||
-        fgData.datePaint ||
-        fgData.dateTreat ||
-        fgData.receivingDate ||
-        "";
-      const parsedDate = parseDate(rawDate);
-      if (!parsedDate) return;
-      const date = formatDateForFilter(parsedDate, selectedFilter);
+      // Group rows by FG
+      const fgRows = [];
 
-      // ✅ Prevent Excel auto-formatting by prefixing with tab
-      const safeFgNumber = `\t${fgNumber}`;
-      const safeReleaseNote = fgData.releaseNote ? `\t${fgData.releaseNote}` : "";
-      const safeNgMaterial = fgData.ngMaterial ? `\t${fgData.ngMaterial}` : "";
-      const safeNgManufacturing = fgData.ngManufacturing ? `\t${fgData.ngManufacturing}` : "";
-      const safeDented = fgData.dented ? `\t${fgData.dented}` : "";
-      const safeRusted = fgData.rusted ? `\t${fgData.rusted}` : "";
-      const safeOther = fgData.other ? `\t${fgData.other}` : "";
+      for (const [fgNumber, stageMap] of Object.entries(fgDetailsMap)) {
+        const rowsForFG = [];
+        let receiveDate = null;
 
-      const formatTimestamp = (ts) => {
-      if (!ts) return "";
-      const date = new Date(ts);
-      if (isNaN(date.getTime())) return "";
-      const pad = (n) => (n < 10 ? "0" + n : n);
-      return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+        for (const stage of stageOrder) {
+          const fgData = stageMap[stage];
+          if (!fgData) continue;
+
+          const rawDate =
+            fgData.dateDeliver ||
+            fgData.datePack ||
+            fgData.datePaint ||
+            fgData.dateTreat ||
+            fgData.receivingDate ||
+            "";
+          const time =
+            fgData.timeDeliver ||
+            fgData.timePack ||
+            fgData.timePaint ||
+            fgData.timeTreat ||
+            fgData.receivingTime ||
+            "";
+
+          if (!rawDate) continue;
+
+          const parsedDate = parseDate(rawDate);
+          if (!parsedDate || !shouldInclude(parsedDate, selectedFilter)) continue;
+
+          const formattedDate = formatDateForFilter(parsedDate);
+          if (stage === "Receive") receiveDate = parsedDate;
+
+          const includeWithFG = fgData.includeWithFG || "";
+          const userName = fgData.userName || "";
+          const quantity = fgData.quantity || "";
+          const doNumber = fgData.doNumber || "";
+          const note = fgData.note || "";
+          const labelType = fgData.labelType || "";
+          const imageUrl = fgData.imageUrl || fgData.checklistImageUrl || "";
+          const qrUrl = fgData.qrImageUrl || "";
+          const verifiedTimestampRaw = fgData.verifiedTimestamp || "";
+
+          let verifiedTimestamp = "";
+          if (typeof verifiedTimestampRaw === "number" || /^\d{13}$/.test(verifiedTimestampRaw)) {
+            const d = new Date(Number(verifiedTimestampRaw));
+            verifiedTimestamp = isNaN(d.getTime())
+              ? ""
+              : `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1)
+                  .toString()
+                  .padStart(2, "0")}/${d.getFullYear()} ${d
+                  .getHours()
+                  .toString()
+                  .padStart(2, "0")}:${d
+                  .getMinutes()
+                  .toString()
+                  .padStart(2, "0")}:${d
+                  .getSeconds()
+                  .toString()
+                  .padStart(2, "0")}`;
+          } else {
+            verifiedTimestamp = verifiedTimestampRaw;
+          }
+
+          const manufacturingDate = stage === "Receive" ? fgData.manufacturingDate || "" : "";
+          const releaseNote = stage === "Pack" ? fgData.releaseNote || "" : "";
+          const ngMaterial = stage === "Pack" ? fgData.ngMaterial || "" : "";
+          const ngManufacturing = stage === "Pack" ? fgData.ngManufacturing || "" : "";
+          const dented = stage === "Pack" ? fgData.dented || "" : "";
+          const rusted = stage === "Pack" ? fgData.rusted || "" : "";
+          const other = stage === "Pack" ? fgData.other || "" : "";
+
+          rowsForFG.push([
+            fgNumber,
+            stage,
+            includeWithFG,
+            manufacturingDate,
+            formattedDate,
+            time,
+            userName,
+            quantity,
+            doNumber,
+            note,
+            labelType,
+            imageUrl,
+            qrUrl,
+            verifiedTimestamp,
+            releaseNote,
+            ngMaterial,
+            ngManufacturing,
+            dented,
+            rusted,
+            other,
+          ]);
+        }
+
+        if (rowsForFG.length > 0) {
+          fgRows.push({
+            date: receiveDate ? receiveDate.getTime() : 0,
+            rows: rowsForFG,
+          });
+        }
+      }
+
+      // Sort FG groups by receive date (latest first)
+      fgRows.sort((a, b) => b.date - a.date);
+
+      // Write rows to CSV
+      for (const group of fgRows) {
+        for (const row of group.rows) {
+          const escaped = row.map((v) => `"${String(v).replace(/"/g, '""')}"`);
+          rows.push(escaped);
+        }
+      }
+
+      const csvContent = rows.map((r) => r.join(",")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+
+      const timestamp = new Date()
+        .toISOString()
+        .replace(/[-:T]/g, "")
+        .split(".")[0];
+      saveAs(blob, `production_export_${timestamp}.csv`);
     };
-
-      rows.push([
-        safeFgNumber,
-        stage,
-        fgData.includeWithFG || "",
-        stage === "Receive" ? fgData.manufacturingDate || "" : "",
-        date,
-        fgData.timeDeliver ||
-          fgData.timePack ||
-          fgData.timePaint ||
-          fgData.timeTreat ||
-          fgData.receivingTime ||
-          "",
-        fgData.userName || "",
-        fgData.quantity ? `\t${fgData.quantity}` : "",
-        fgData.doNumber || "",
-        fgData.note || "",
-        fgData.labelType || "",
-        fgData.imageUrl || fgData.checklistImageUrl || "",
-        fgData.qrImageUrl || "",
-        formatTimestamp(fgData.verifiedTimestamp),
-        safeReleaseNote,
-        safeNgMaterial,
-        safeNgManufacturing,
-        safeDented,
-        safeRusted,
-        safeOther,
-      ]);
-    });
-  });
-
-  const csvContent = rows.map((r) => r.map((v) => `"${v}"`).join(",")).join("\n");
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  saveAs(blob, `production_export_${Date.now()}.csv`);
-};
 
   return (
     <div className="analytic-production-root">

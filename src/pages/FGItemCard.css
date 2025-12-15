@@ -1,25 +1,24 @@
 .fg-card {
   background: #fff;
   border-radius: 10px;
-  margin: 16px auto;                         /* Center + more breathing space */
+  margin: 16px auto; /* Center + more breathing space */
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  
+
   display: flex;
   flex-direction: column;
-  align-items: center;                       /* center horizontally */
-  justify-content: center;                   /* center vertically */
+  align-items: center; /* center horizontally */
+  justify-content: center; /* center vertically */
   text-align: center;
-  padding: 8px;                             /* better padding for web view */
+  padding: 8px;
   line-height: 1.6;
 
-  width: 80%;                                /* responsive width */
-  max-width: 600px;                          /* limit width on large screens */
-  min-height: 40px;                         /* consistent card height */
+  width: 80%;
+  max-width: 600px;
+  min-height: 40px;
   box-sizing: border-box;
 }
-
 
 /* Smooth hover for web UX */
 .fg-card:hover {
@@ -27,64 +26,67 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
 }
 
+/* HEADER AREA */
 .fg-header {
   display: flex;
+  flex-direction: column; /* stack FG info and part vertically */
   align-items: center;
-  justify-content: space-between;
-  width: 100%;                               /* match card width */
+  justify-content: center;
+  width: 100%;
   padding: 12px 16px;
   cursor: pointer;
-  font-size: 18px;
-  font-weight: 600;
-  color: #0d47a1;
   box-sizing: border-box;
 }
 
-.fg-number, .fg-percentage, .fg-time {
+.fg-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.fg-number,
+.fg-percentage,
+.fg-time {
   font-weight: 600;
   color: #2b3a67;
-  margin-right: 12px;
+  font-size: 18px;
 }
 
 .arrow {
   transition: transform 0.2s;
+  margin-left: 8px;
+  color: #1976d2;
 }
 
 .arrow.expanded {
   transform: rotate(180deg);
 }
 
+/* FG Part — below FG number */
+.fg-part {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #666;
+  text-align: left;
+  width: 100%; /* align with header width */
+  padding-left: 2px;
+}
+
 /* Steps section */
 .fg-steps {
-  width: 100%;                               /* take full width of card */
+  width: 100%;
   padding: 12px 16px;
   background: #f7faff;
   border-top: 1px solid #e0e6ef;
 
   display: flex;
   flex-direction: column;
-  gap: 6px;                                  /* spacing between step items */
+  gap: 6px;
   box-sizing: border-box;
 }
 
-/* Responsive tweak for smaller screens */
-@media (max-width: 768px) {
-  .fg-card {
-    width: 95%;
-    padding: 12px;
-    font-size: 14px;
-  }
-
-  .fg-header {
-    font-size: 16px;
-    padding: 10px 12px;
-  }
-
-  .fg-steps {
-    padding: 10px 12px;
-  }
-}
-
+/* Step item */
 .step-item {
   display: flex;
   align-items: center;
@@ -110,7 +112,26 @@
   margin-right: 8px;
 }
 
-.arrow {
-  margin-left: 8px;
-  color: #1976d2;
+/* Responsive tweak for smaller screens */
+@media (max-width: 768px) {
+  .fg-card {
+    width: 95%;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .fg-header-top {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .fg-number,
+  .fg-time,
+  .fg-percentage {
+    font-size: 16px;
+  }
+
+  .fg-steps {
+    padding: 10px 12px;
+  }
 }

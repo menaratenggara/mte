@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getDatabase, ref, get, update } from "firebase/database";
+import { getDatabase, ref, get, update, remove } from "firebase/database";
 import "./AdminDeliver.css";
 import { createPortal } from "react-dom";
 
@@ -16,6 +16,7 @@ export default function AdminDeliver({ fgNumber, nodeName, onBack }) {
   });
   const [remark, setRemark] = useState("");
   const [zoomImage, setZoomImage] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const androidToISODate = (val) => {
     if (!val) return "";
@@ -115,13 +116,72 @@ export default function AdminDeliver({ fgNumber, nodeName, onBack }) {
     }
   };
 
+   // ------------------ Delete FG Handler ------------------
+  const handleDeleteFG = () => {
+    if (!fgNumber) {
+      alert("FG Number not found.");
+      return;
+    }
+  
+    if (
+      !window.confirm(
+        `Are you sure you want to delete FG Number ${fgNumber}? This action cannot be undone.`
+      )
+    ) {
+      return;
+    }
+  
+    setIsDeleting(true); // 🌀 Show overlay
+  
+    const deliverRef = ref(db, "Deliver");
+  
+    get(deliverRef)
+      .then((snapshot) => {
+        let found = false;
+        const updates = [];
+  
+        snapshot.forEach((child) => {
+          const data = child.val();
+          if (data.fgNumber === fgNumber) {
+            updates.push(remove(child.ref)); // ✅ fixed version
+            found = true;
+          }
+        });
+  
+        if (found) {
+          Promise.all(updates)
+            .then(() => {
+              alert(`FG Number ${fgNumber} deleted successfully.`);
+              onBack && onBack();
+            })
+            .catch((err) => {
+              console.error("Remove failed:", err);
+              alert(`Failed to remove FG: ${err.message}`);
+            })
+            .finally(() => setIsDeleting(false)); // 🧹 Hide overlay
+        } else {
+          alert("No matching FG found.");
+          setIsDeleting(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to delete:", err);
+        alert(`Failed to delete: ${err.message}`);
+        setIsDeleting(false);
+      });
+  };
+
   return (
     <div className="admin-deliver-root">
       <div className="card">
         <h2 className="title">{nodeName} for {fgNumber}</h2>
-<p className={`remark ${remark ? "has-remark" : ""}`}>
-  Remark: {remark || "No remark"}
-</p>
+        <p className={`remark ${remark ? "has-remark" : ""}`}>
+          Remark: {remark || "No remark"}
+        </p>
+      {/* Delete FG button top-right */}
+      <button className="delete-fg-btn" onClick={handleDeleteFG} title="Delete FG">
+        Delete Deliver 🗑
+      </button>
         <div className="images-row">
           <div className="image-box" onClick={() => setZoomImage(images.qrUrl)}>
             <img src={images.qrUrl} alt="QR" />
@@ -175,6 +235,12 @@ export default function AdminDeliver({ fgNumber, nodeName, onBack }) {
           </div>
         </div>
       </div>
+        {isDeleting && (
+  <div className="loading-overlay">
+    <div className="spinner"></div>
+    <p>Deleting FG Number...</p>
+  </div>
+)}
     </div>
   );
 }

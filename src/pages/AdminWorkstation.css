@@ -108,3 +108,27 @@
     font-size: 24px;
   }
 }
+
+/* Refresh Button */
+.workstation-page .refresh-btn {
+  margin-bottom: 24px;
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.workstation-page .refresh-btn:hover {
+  background-color: #1565c0;
+  transform: translateY(-2px);
+}
+
+.workstation-page .refresh-btn:disabled {
+  background-color: #90a4ae;
+  cursor: not-allowed;
+  transform: none;
+}

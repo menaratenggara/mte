@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { getDatabase, ref, get, update } from "firebase/database";
+import { getDatabase, ref, get, update, remove } from "firebase/database";
 import "./AdminPack.css";
 
 export default function AdminPack({ fgNumber, nodeName, onBack }) {
@@ -38,6 +38,7 @@ export default function AdminPack({ fgNumber, nodeName, onBack }) {
   const [remark, setRemark] = useState("");
   const [isHaveNGs, setIsHaveNGs] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // ---------------- EFFECT: BODY SCROLL LOCK WHEN ZOOM OPEN ----------------
   useEffect(() => {
@@ -228,6 +229,61 @@ export default function AdminPack({ fgNumber, nodeName, onBack }) {
 
   if (loading) return <p>Loading...</p>;
 
+  // ------------------ Delete FG Handler ------------------
+  const handleDeleteFG = () => {
+    if (!fgNumber) {
+      alert("FG Number not found.");
+      return;
+    }
+  
+    if (
+      !window.confirm(
+        `Are you sure you want to delete FG Number ${fgNumber}? This action cannot be undone.`
+      )
+    ) {
+      return;
+    }
+  
+    setIsDeleting(true); // 🌀 Show overlay
+  
+    const packRef = ref(db, "Pack");
+  
+    get(packRef)
+      .then((snapshot) => {
+        let found = false;
+        const updates = [];
+  
+        snapshot.forEach((child) => {
+          const data = child.val();
+          if (data.fgNumber === fgNumber) {
+            updates.push(remove(child.ref)); // ✅ fixed version
+            found = true;
+          }
+        });
+  
+        if (found) {
+          Promise.all(updates)
+            .then(() => {
+              alert(`FG Number ${fgNumber} deleted successfully.`);
+              onBack && onBack();
+            })
+            .catch((err) => {
+              console.error("Remove failed:", err);
+              alert(`Failed to remove FG: ${err.message}`);
+            })
+            .finally(() => setIsDeleting(false)); // 🧹 Hide overlay
+        } else {
+          alert("No matching FG found.");
+          setIsDeleting(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to delete:", err);
+        alert(`Failed to delete: ${err.message}`);
+        setIsDeleting(false);
+      });
+  };
+
   // ---------------- RENDER ----------------
   return (
     <div className="admin-pack-root">
@@ -238,6 +294,10 @@ export default function AdminPack({ fgNumber, nodeName, onBack }) {
         <p className={`remark ${remark ? "red" : ""}`}>
           Remark: {remark || "No remark"}
         </p>
+      {/* Delete FG button top-right */}
+      <button className="delete-fg-btn" onClick={handleDeleteFG} title="Delete FG">
+        Delete Pack 🗑
+      </button>
 
         {/* Images */}
         <div className="images-row">
@@ -410,6 +470,12 @@ export default function AdminPack({ fgNumber, nodeName, onBack }) {
           </div>
         </div>
       </div>
+        {isDeleting && (
+  <div className="loading-overlay">
+    <div className="spinner"></div>
+    <p>Deleting FG Number...</p>
+  </div>
+)}
     </div>
   );
 }

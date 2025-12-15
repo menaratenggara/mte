@@ -1,5 +1,5 @@
 // src/components/AdminData.jsx
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { rtdb, storage } from "../firebase";
 import {
   ref as dbRef,
@@ -30,6 +30,7 @@ export default function AdminData({ onBack }) {
     "receives",
   ];
 
+  const firstLoad = useRef(true);
   const [grouped, setGrouped] = useState({}); // monthKey -> weekMap OR "Unknown" -> array
   const [monthTotals, setMonthTotals] = useState({});
   const [availableMonths, setAvailableMonths] = useState([]);
@@ -38,6 +39,7 @@ export default function AdminData({ onBack }) {
   const [working, setWorking] = useState(false);
   const [message, setMessage] = useState("");
   const [expandAll, setExpandAll] = useState(false);
+  const [viewMode, setViewMode] = useState("all");
 
   const parseDateToTimestamp = (dateStr) => {
     if (!dateStr) return 0;
@@ -133,8 +135,14 @@ export default function AdminData({ onBack }) {
       setGrouped(groupedMap);
       setMonthTotals(totals);
       setAvailableMonths(monthKeys);
-      setSelectedMonthsCount(monthKeys.length > 0 ? 1 : 0);
+
+      if (firstLoad.current) {
+        setSelectedMonthsCount(1);
+        firstLoad.current = false;
+      }
+
       setLoading(false);
+
     });
 
     return () => unsubscribe();
@@ -142,9 +150,14 @@ export default function AdminData({ onBack }) {
 
   const monthsToShow = useMemo(() => {
     if (!availableMonths || availableMonths.length === 0) return [];
-    const take = Math.min(selectedMonthsCount || 0, availableMonths.length);
-    return availableMonths.slice(0, take);
-  }, [availableMonths, selectedMonthsCount]);
+
+    if (viewMode === "all") {
+      return availableMonths;    // always show all months
+    }
+
+    // filtered mode (after deletion)
+    return availableMonths.slice(0, selectedMonthsCount);
+  }, [availableMonths, selectedMonthsCount, viewMode]);
 
   // -- deletion helpers (unchanged) --
   const deleteFromNode = async (nodeName, fgNumber) => {
@@ -213,67 +226,99 @@ export default function AdminData({ onBack }) {
   };
 
   const deleteOldestMonths = async (monthCount) => {
-    if (!availableMonths || availableMonths.length === 0) return;
-    const targetMonths = availableMonths.slice(0, monthCount);
-    if (!window.confirm(`Delete records from months:\n${targetMonths.join(", ")} ?`)) return;
+  if (!availableMonths || availableMonths.length === 0) return;
 
-    setWorking(true);
-    setMessage("Deleting data...");
+  const targetMonths = availableMonths.slice(0, monthCount);
 
-    try {
-      const allTasks = [];
-      for (const month of targetMonths) {
-        const items = flattenMonthItems(month);
-        for (const item of items) {
-          const { fgNumber, id } = item;
-          allTasks.push(dbRemove(dbRef(rtdb, `Receive/${id}`)).catch(() => {}));
-          for (const node of ["Treat", "Paint", "Pack", "Deliver"]) {
-            allTasks.push(deleteFromNode(node, fgNumber));
-          }
-          allTasks.push(deleteOrphanFilesByFg(fgNumber));
-        }
-      }
-      await Promise.all(allTasks);
-      setMessage("Deletion complete. Reloading data...");
-      setTimeout(() => {
-        setMessage("");
-        setWorking(false);
-      }, 800);
-    } catch (e) {
-      console.error("deleteOldestMonths error", e);
-      setMessage("Deletion failed. See console for details.");
-      setWorking(false);
-    }
-  };
+  if (!window.confirm(`Delete records from months:\n${targetMonths.join(", ")} ?`))
+    return;
 
-  const deleteUnknownRecords = async () => {
-    const items = grouped["Unknown"] || [];
-    if (items.length === 0) {
-      alert("No Unknown records to delete.");
-      return;
-    }
-    if (!window.confirm("Are you sure you want to delete all Unknown records?")) return;
+  setWorking(true);
+  setMessage("Deleting data...");
 
-    setWorking(true);
-    setMessage("Deleting Unknown records...");
-    try {
-      const allTasks = [];
-      for (const { fgNumber, id } of items) {
-        allTasks.push(dbRemove(dbRef(rtdb, `Receive/${id}`)).catch(() => {}));
+  try {
+    const allTasks = [];
+
+    for (const month of targetMonths) {
+      const items = flattenMonthItems(month);
+
+      for (const item of items) {
+        const { fgNumber, id } = item;
+
+        // Delete Receive
+        allTasks.push(
+          dbRemove(dbRef(rtdb, `Receive/${id}`)).catch(() => {})
+        );
+
+        // Delete child nodes
         for (const node of ["Treat", "Paint", "Pack", "Deliver"]) {
           allTasks.push(deleteFromNode(node, fgNumber));
         }
+
+        // Delete orphan storage files
         allTasks.push(deleteOrphanFilesByFg(fgNumber));
       }
-      await Promise.all(allTasks);
-      setMessage("");
-      setWorking(false);
-    } catch (e) {
-      console.error(e);
-      setMessage("Failed deleting Unknown records.");
-      setWorking(false);
     }
-  };
+
+    await Promise.all(allTasks);
+
+    // ❗ DO NOT FORCE reload or modify month selection
+    // Firebase `onValue()` will auto refresh by itself
+
+    setMessage("Deletion complete.");
+    setWorking(false);
+
+  } catch (e) {
+    console.error("deleteOldestMonths error", e);
+    setMessage("Deletion failed.");
+    setWorking(false);
+  }
+};
+
+
+const deleteUnknownRecords = async () => {
+  const items = grouped["Unknown"] || [];
+  if (items.length === 0) {
+    alert("No Unknown records to delete.");
+    return;
+  }
+
+  if (!window.confirm("Are you sure you want to delete all Unknown records?"))
+    return;
+
+  setWorking(true);
+  setMessage("Deleting Unknown records...");
+
+  try {
+    const allTasks = [];
+
+    for (const { fgNumber, id } of items) {
+      // Delete Receive
+      allTasks.push(
+        dbRemove(dbRef(rtdb, `Receive/${id}`)).catch(() => {})
+      );
+
+      // Delete child nodes
+      for (const node of ["Treat", "Paint", "Pack", "Deliver"]) {
+        allTasks.push(deleteFromNode(node, fgNumber));
+      }
+
+      // Delete orphan storage files
+      allTasks.push(deleteOrphanFilesByFg(fgNumber));
+    }
+
+    await Promise.all(allTasks);
+
+    // ❗ Keep UI state untouched — allow user to choose again
+    setMessage("Unknown records deleted.");
+    setWorking(false);
+
+  } catch (e) {
+    console.error(e);
+    setMessage("Failed deleting Unknown records.");
+    setWorking(false);
+  }
+};
 
   const handleDeleteChoice = () => {
     const choice = window.prompt(

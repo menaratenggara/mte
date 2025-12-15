@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDatabase, ref, get, update } from "firebase/database";
+import { getDatabase, ref, get, update, remove } from "firebase/database";
 import "./AdminTreat.css";
 import { createPortal } from "react-dom";
 
@@ -29,6 +29,7 @@ export default function AdminTreat({ fgNumber, nodeName, onBack }) {
   const [staffList, setStaffList] = useState([]);
   const [pendingDelete, setPendingDelete] = useState(false);
   const [zoomImage, setZoomImage] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const androidToISODate = (val) => {
     if (!val) return "";
@@ -145,6 +146,57 @@ export default function AdminTreat({ fgNumber, nodeName, onBack }) {
     }
   }, [selectedNotes, pendingDelete]);
 
+    // ------------------ Delete FG Handler ------------------
+    const handleDeleteFG = () => {
+      if (!fgNumber) {
+        alert("FG Number not found.");
+        return;
+      }
+  
+      if (!window.confirm(`Are you sure you want to delete FG Number ${fgNumber}? This action cannot be undone.`)) {
+        return;
+      }
+
+      setIsDeleting(true); // 🌀 Show overlay
+  
+      const treatRef = ref(db, "Treat");
+  
+        get(treatRef)
+          .then((snapshot) => {
+            let found = false;
+            const updates = [];
+      
+            snapshot.forEach((child) => {
+              const data = child.val();
+              if (data.fgNumber === fgNumber) {
+                updates.push(remove(child.ref)); // ✅ fixed version
+                found = true;
+              }
+            });
+      
+            if (found) {
+              Promise.all(updates)
+                .then(() => {
+                  alert(`FG Number ${fgNumber} deleted successfully.`);
+                  onBack && onBack();
+                })
+                .catch((err) => {
+                  console.error("Remove failed:", err);
+                  alert(`Failed to remove FG: ${err.message}`);
+                })
+                .finally(() => setIsDeleting(false)); // 🧹 Hide overlay
+            } else {
+              alert("No matching FG found.");
+              setIsDeleting(false);
+            }
+          })
+          .catch((err) => {
+            console.error("Failed to delete:", err);
+            alert(`Failed to delete: ${err.message}`);
+            setIsDeleting(false);
+          });
+      };
+
   // ✅ Fixed toggleNote: reset pendingDelete when selecting new notes
   const toggleNote = (note) => {
     setPendingDelete(false); // reset delete mode when user adds/selects a new note
@@ -235,6 +287,10 @@ export default function AdminTreat({ fgNumber, nodeName, onBack }) {
         <p className={`remark ${titleRemarkColorRed ? "red" : ""}`}>
           Remark: {titleRemark || "No remark"}
         </p>
+              {/* Delete FG button top-right */}
+      <button className="delete-fg-btn" onClick={handleDeleteFG} title="Delete FG">
+        Delete Treat 🗑
+      </button>
 
         {/* --- Image Section --- */}
         <div className="image-section">
@@ -347,6 +403,12 @@ export default function AdminTreat({ fgNumber, nodeName, onBack }) {
           </div>
         </div>
       </div>
+        {isDeleting && (
+  <div className="loading-overlay">
+    <div className="spinner"></div>
+    <p>Deleting FG Number...</p>
+  </div>
+)}
     </div>
   );
 }

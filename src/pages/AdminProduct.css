@@ -92,24 +92,23 @@
   gap: 8px;
   align-items: center;
   background: #dfeffb;
-  padding: 8px 12px;
+  padding: 8px;               /* remove extra horizontal padding to match items */
   border-radius: 6px;
   border: 1px solid #cfd8dc;
   font-weight: 700;
 
-  /* Align width and margin with product list wrapper */
   width: 100%;
-  max-width: 880px;       /* same as product-list-wrapper */
-  margin: 0 auto 10px auto; /* center horizontally with bottom spacing */
-  box-sizing: border-box; /* ensure padding doesn't break alignment */
-  margin-bottom: 0 !important; 
+  max-width: 880px;           
+  margin: 0 auto 10px auto;   
+  box-sizing: border-box;
 }
 
 .list-header .col { padding: 2px 8px; }
 .list-header .code { width: 140px; flex: 0 0 140px; }
 .list-header .qty { width: 60px; flex: 0 0 60px; text-align: center; }
-.list-header .desc { flex: 1 1 200px; min-width: 180px; max-width: 360px; }
+.list-header .desc { width: 140px; flex: 0 0 220px; }
 .list-header .cust { width: 140px; flex: 0 0 140px; }
+.list-header .supplier { width: 140px; flex: 0 0 140px; }
 
 /* product list area */
 .product-list-wrapper {
@@ -145,6 +144,7 @@
 .product-main .qty { width: 60px; flex: 0 0 60px; text-align: center; }
 .product-main .desc { flex: 1 1 200px; min-width: 180px; max-width: 360px; color: #333; }
 .product-main .cust { width: 140px; flex: 0 0 140px; color: #333; }
+.product-main .supplier { width: 140px; flex: 0 0 140px; color: #333; }
 
 /* Responsive tweaks */
 @media (max-width: 880px) {
@@ -268,12 +268,30 @@
 .back-btn:hover { transform: translateY(-2px); background: #90a4ae; }
 
 /* responsive tweaks */
+/* --- Responsive tweaks --- */
 @media (max-width: 880px) {
-  .list-header .code, .list-header .cust {
-    display: none;
+  /* Hide columns for small screens */
+  .list-header .code,
+  .list-header .cust,
+  .list-header .supplier { display: none; }
+
+  .product-main .code,
+  .product-main .cust,
+  .product-main .supplier { display: none; }
+
+  /* Adjust description and quantity widths */
+  .list-header .desc,
+  .product-main .desc {
+    flex: 1 1 160px;
+    min-width: 160px;
+    max-width: 280px;
   }
-  .list-header .desc { flex: 1 1 160px; min-width: 160px; max-width: 280px; }
-  .list-header .qty { width: 60px; }
+
+  .list-header .qty,
+  .product-main .qty {
+    width: 60px;
+    flex: 0 0 60px;
+  }
 }
 
 .product-container {
@@ -282,4 +300,8 @@
   align-items: center;       /* center everything horizontally */
   max-width: 880px;
   margin: 0 auto 18px auto;
+}
+
+@media (max-width: 880px) {
+  .product-main .supplier { display: none; }
 }

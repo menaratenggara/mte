@@ -85,15 +85,14 @@
   color: white;
 }
 
-/* Loader */
+/* Loader Orbit Animation */
 .admin-progress-root .loader {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;              /* circle size */
+  width: 80px;
   height: 80px;
-  border-radius: 50%;       /* makes it a circle */
+  border-radius: 50%;
   background: rgba(255, 255, 255, 0.85);
   color: #0d47a1;
   font-size: 16px;
@@ -103,7 +102,28 @@
   justify-content: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+
+  /* 🌀 Circular orbit motion */
+  animation:
+    orbit 3s linear infinite,
+    glow 1.5s ease-in-out infinite alternate;
 }
+
+@keyframes glow {
+  from { box-shadow: 0 0 10px rgba(13, 71, 161, 0.3); }
+  to { box-shadow: 0 0 20px rgba(13, 71, 161, 0.7); }
+}
+
+/* Define circular path motion */
+@keyframes orbit {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) translateX(60px) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) translateX(60px) rotate(-360deg);
+  }
+}
+
 
 /* Accordion card */
 .admin-progress-root .accordion-card {
@@ -219,4 +239,21 @@
   .admin-progress-root .month-item {
     font-size: 16px;
   }
+}
+
+.listening-indicator {
+  text-align: center;
+  margin: 10px 0;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.blink {
+  animation: blinkAnim 1s infinite;
+}
+
+@keyframes blinkAnim {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
 }

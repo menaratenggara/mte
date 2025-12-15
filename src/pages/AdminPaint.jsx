@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getDatabase, ref, get, update } from "firebase/database";
+import { getDatabase, ref, get, update, remove, push } from "firebase/database";
 import "./AdminPaint.css";
 import { createPortal } from "react-dom";
 
@@ -11,6 +11,8 @@ export default function AdminPaint({ fgNumber, nodeName, onBack }) {
   const [otherText, setOtherText] = useState("");
   const [pendingDelete, setPendingDelete] = useState(false);
   const [zoomImage, setZoomImage] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [batchDeleteKeys, setBatchDeleteKeys] = useState([]);
 
   const [staffList, setStaffList] = useState([]);
   const [form, setForm] = useState({
@@ -24,6 +26,9 @@ export default function AdminPaint({ fgNumber, nodeName, onBack }) {
     checklistUrl: "",
   });
   const [remark, setRemark] = useState("");
+
+    // New: batch list state
+  const [batchList, setBatchList] = useState([]);
 
   const androidToISODate = (val) => {
     if (!val) return "";
@@ -84,6 +89,15 @@ export default function AdminPaint({ fgNumber, nodeName, onBack }) {
           if (data.note) {
             const arr = data.note.split(",").map((n) => n.trim()).filter(Boolean);
             setSelectedNotes(arr);
+          }
+          // Batch
+          if (data.batch) {
+            const batchArr = Object.keys(data.batch).map((key) => ({
+              label: data.batch[key].batchLabel || "",
+              quantity: data.batch[key].quantity || "",
+              firebaseKey: key,
+            }));
+            setBatchList(batchArr);
           }
         } else {
           // default to today
@@ -165,31 +179,143 @@ useEffect(() => {
     setZoomImage(null);
   };
 
-  const handleSave = async () => {
-    if (!fgNumber || !nodeName) return;
+// ----------------- Save -----------------
+const handleSave = async () => {
+  if (!fgNumber || !nodeName) return;
 
-    const nodeRef = ref(db, `${nodeName}/${fgNumber}`);
-    const updates = {};
+  const nodeRef = ref(db, `${nodeName}/${fgNumber}`);
+  const updates = {};
 
-    if (form.datePaint) updates.datePaint = isoToAndroidDate(form.datePaint);
-    if (form.timePaint) updates.timePaint = time24ToAndroid(form.timePaint);
-    if (form.userName) updates.userName = form.userName;
-    if (pendingDelete) updates.note = null;
-    else if (selectedNotes.length) updates.note = selectedNotes.join(", ");
+  if (form.datePaint) updates.datePaint = isoToAndroidDate(form.datePaint);
+  if (form.timePaint) updates.timePaint = time24ToAndroid(form.timePaint);
+  if (form.userName) updates.userName = form.userName;
+  if (pendingDelete) updates.note = null;
+  else if (selectedNotes.length) updates.note = selectedNotes.join(", ");
 
-    try {
-      await update(nodeRef, updates);
-      if (pendingDelete) {
-        setForm((prev) => ({ ...prev, note: "" }));
-        setSelectedNotes([]);
-        setPendingDelete(false);
-      }
-      await update(nodeRef, { remark: null }).catch(() => {});
-      onBack && onBack();
-    } catch (err) {
-      console.error("Save failed:", err);
-      alert("Failed to save — check console.");
+  try {
+    // Update main form data
+    await update(nodeRef, updates);
+
+    // ----------------- Batch Handling -----------------
+    // 1️⃣ Remove deleted batches
+    for (const key of batchDeleteKeys) {
+      await remove(ref(db, `${nodeName}/${fgNumber}/batch/${key}`));
     }
+    setBatchDeleteKeys([]); // reset after deletion
+
+    // 2️⃣ Update existing or add new batch rows
+    for (const row of batchList) {
+      if (!row.label && !row.quantity) continue; // skip empty rows
+
+      if (row.firebaseKey) {
+        // Update existing row
+        await update(ref(db, `${nodeName}/${fgNumber}/batch/${row.firebaseKey}`), {
+          batchLabel: row.label,
+          quantity: row.quantity,
+        });
+      } else {
+        // Add new row
+        await push(ref(db, `${nodeName}/${fgNumber}/batch`), {
+          batchLabel: row.label,
+          quantity: row.quantity,
+        });
+      }
+    }
+
+    // Reset pending delete notes
+    if (pendingDelete) {
+      setForm((prev) => ({ ...prev, note: "" }));
+      setSelectedNotes([]);
+      setPendingDelete(false);
+    }
+
+    // Clear remark if needed
+    await update(nodeRef, { remark: null }).catch(() => {});
+
+    // Go back
+    onBack && onBack();
+  } catch (err) {
+    console.error("Save failed:", err);
+    alert("Failed to save — check console.");
+  }
+};
+
+  // ------------------ Delete FG Handler ------------------
+  const handleDeleteFG = () => {
+    if (!fgNumber) {
+      alert("FG Number not found.");
+      return;
+    }
+  
+    if (
+      !window.confirm(
+        `Are you sure you want to delete FG Number ${fgNumber}? This action cannot be undone.`
+      )
+    ) {
+      return;
+    }
+  
+    setIsDeleting(true); // 🌀 Show overlay
+  
+    const paintRef = ref(db, "Paint");
+  
+    get(paintRef)
+      .then((snapshot) => {
+        let found = false;
+        const updates = [];
+  
+        snapshot.forEach((child) => {
+          const data = child.val();
+          if (data.fgNumber === fgNumber) {
+            updates.push(remove(child.ref)); // ✅ fixed version
+            found = true;
+          }
+        });
+  
+        if (found) {
+          Promise.all(updates)
+            .then(() => {
+              alert(`FG Number ${fgNumber} deleted successfully.`);
+              onBack && onBack();
+            })
+            .catch((err) => {
+              console.error("Remove failed:", err);
+              alert(`Failed to remove FG: ${err.message}`);
+            })
+            .finally(() => setIsDeleting(false)); // 🧹 Hide overlay
+        } else {
+          alert("No matching FG found.");
+          setIsDeleting(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to delete:", err);
+        alert(`Failed to delete: ${err.message}`);
+        setIsDeleting(false);
+      });
+  };
+
+  // ----------------- Batch Handlers -----------------
+  const updateBatchRow = (index, field, value) => {
+    setBatchList((prev) =>
+      prev.map((row, i) =>
+        i === index ? { ...row, [field]: value } : row
+      )
+    );
+  };
+
+  const deleteBatchRow = (index) => {
+    setBatchList((prev) => {
+      const row = prev[index];
+      if (row.firebaseKey) {
+        setBatchDeleteKeys((keys) => [...keys, row.firebaseKey]);
+      }
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const addBatchRow = () => {
+    setBatchList((prev) => [...prev, { label: "", quantity: "" }]);
   };
 
   return (
@@ -199,6 +325,10 @@ useEffect(() => {
         <p className={`remark ${remark ? "red" : ""}`}>
           Remark: {remark || "No remark"}
         </p>
+      {/* Delete FG button top-right */}
+      <button className="delete-fg-btn" onClick={handleDeleteFG} title="Delete FG">
+        Delete Paint 🗑
+      </button>
         <div className="images-row">
           <div className="image-box" onClick={() => handleImageClick(images.qrUrl)}>
             <img src={images.qrUrl} alt="QR" />
@@ -284,6 +414,29 @@ useEffect(() => {
             />
             </div>
 
+                      {/* Batch Section */}
+          <div className="batch-section">
+            <h3>Batch List</h3>
+            {batchList.map((row, idx) => (
+              <div key={idx} className="batch-row">
+                <input
+                  type="text"
+                  placeholder="Batch Label"
+                  value={row.label}
+                  onChange={(e) => updateBatchRow(idx, "label", e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Quantity"
+                  value={row.quantity}
+                  onChange={(e) => updateBatchRow(idx, "quantity", e.target.value)}
+                />
+                <button type="button" onClick={() => deleteBatchRow(idx)}>🗑</button>
+              </div>
+            ))}
+            <button type="button" onClick={addBatchRow}>➕ Add Batch</button>
+          </div>
+
           <label className="form-row">
             <span className="label">User:</span>
             <select
@@ -303,6 +456,12 @@ useEffect(() => {
           </div>
         </div>
       </div>
+        {isDeleting && (
+  <div className="loading-overlay">
+    <div className="spinner"></div>
+    <p>Deleting FG Number...</p>
+  </div>
+)}
     </div>
   );
 }

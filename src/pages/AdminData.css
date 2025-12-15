@@ -46,6 +46,7 @@
   max-width: 100%;
   height: 700px;
   display: flex;
+  flex-direction: column;
   overflow: hidden; /* prevent double scrollbars */
   position: relative;
 }
@@ -72,7 +73,6 @@
 
 /* ✅ scrollable area inside accordion card */
 .admin-data-root .accordion-card > :not(.accordion-toolbar) {
-  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0 12px 12px 12px;

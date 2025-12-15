@@ -21,18 +21,24 @@ function FGItemCard({ fg, onNavigate }) {
     <div className="fg-card">
       {/* Header */}
       <div className="fg-header" onClick={toggleExpand}>
-        <span className="fg-number">{fg.fgNumber}</span>
-        <span className="fg-time">{fg.time || "-"}</span>
-        <span className="fg-percentage">{fg.percentage}%</span>
+        {/* Top row (FG number, time, % and arrow) */}
+        <div className="fg-header-top">
+          <span className="fg-number">{fg.fgNumber}</span>
+          <span className="fg-time">{fg.time || "-"}</span>
+          <span className="fg-percentage">{fg.percentage}%</span>
 
-        {fg.stepsList.length > 0 && (
-          <span
-            className={`arrow ${isExpanded ? "expanded" : ""}`}
-            style={{ transition: "transform 0.2s" }}
-          >
-            ▼
-          </span>
-        )}
+          {fg.stepsList.length > 0 && (
+            <span
+              className={`arrow ${isExpanded ? "expanded" : ""}`}
+              style={{ transition: "transform 0.2s" }}
+            >
+              ▼
+            </span>
+          )}
+        </div>
+
+        {/* ✅ Part shown below FG number */}
+        <div className="fg-part">{fg.part || "-"}</div>
       </div>
 
       {/* Steps */}
